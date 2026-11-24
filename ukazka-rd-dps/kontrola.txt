@@ -1,0 +1,44 @@
+KŘÍŽOVÁ KONTROLA UKÁZKY: 42 kontrol, 0 chyb
+
+OK    okna a dveře: model 27 ks, IFC 27 ks, shoda značek, rozměrů a počtů
+OK    otvory v IFC 28 = model 28
+OK    místnost 1.01 Zádveří: IFC 8.07 m², model 8.07 m²
+OK    místnost 1.02 Chodba: IFC 19.56 m², model 19.56 m²
+OK    místnost 1.03 Obývací pokoj s kuchyní: IFC 44.1 m², model 44.10 m²
+OK    místnost 1.04 Spíž: IFC 3.38 m², model 3.38 m²
+OK    místnost 1.05 Pracovna: IFC 10.44 m², model 10.44 m²
+OK    místnost 1.06 WC: IFC 4.01 m², model 4.01 m²
+OK    místnost 1.07 Koupelna: IFC 9.09 m², model 9.09 m²
+OK    místnost 1.08 Šatna: IFC 4.69 m², model 4.69 m²
+OK    místnost 1.09 Ložnice: IFC 15.23 m², model 15.23 m²
+OK    místnost 1.10 Pokoj: IFC 12.98 m², model 12.98 m²
+OK    místnost 1.11 Pokoj: IFC 13.15 m², model 13.15 m²
+OK    místnost 1.12 Technická místnost, prádelna: IFC 6.7 m², model 6.70 m²
+OK    místnost 1.13 Garáž: IFC 20.4 m², model 20.40 m²
+OK    místnost 1.14 Sklad zahradního nářadí: IFC 4.42 m², model 4.42 m²
+OK    půdorys uvádí plochu 1.01 = 8,07 m²
+OK    půdorys uvádí plochu 1.02 = 19,56 m²
+OK    půdorys uvádí plochu 1.03 = 44,10 m²
+OK    půdorys uvádí plochu 1.04 = 3,38 m²
+OK    půdorys uvádí plochu 1.05 = 10,44 m²
+OK    půdorys uvádí plochu 1.06 = 4,01 m²
+OK    půdorys uvádí plochu 1.07 = 9,09 m²
+OK    půdorys uvádí plochu 1.08 = 4,69 m²
+OK    půdorys uvádí plochu 1.09 = 15,23 m²
+OK    půdorys uvádí plochu 1.10 = 12,98 m²
+OK    půdorys uvádí plochu 1.11 = 13,15 m²
+OK    půdorys uvádí plochu 1.12 = 6,70 m²
+OK    půdorys uvádí plochu 1.13 = 20,40 m²
+OK    půdorys uvádí plochu 1.14 = 4,42 m²
+OK    půdorys má značku u každého otvoru (27) a řádek ve výpisu oken a dveří (19)
+OK    každá značka otvoru je ve výpisu
+OK    textová část uvádí podlahovou plochu 176.23 m²
+OK    textová část uvádí výšku hřebene +7.597
+OK    textová část uvádí Uem = 0.195
+OK    odstup stavby od hranic pozemku nejméně 2 m (vyhl. 146/2024 Sb. § 11)
+OK    požárně nebezpečný prostor nezasahuje na sousední pozemky
+OK    koeficient zastavění podle ÚP nejvýše 0,30
+OK    součinitele U splňují požadované hodnoty ČSN 73 0540-2
+OK    vsakovací objekt pojme návrhový objem
+OK    překlady všech otvorů se vejdou pod horní líc zdiva
+OK    pergola začíná až za okapem

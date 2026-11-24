@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Rodinný dům Ukázkov · ukázka studie a dokumentace pro povolení stavby</title>
+<style>
+  :root { --ink: #1d232b; --muted: #5b6470; --line: #dfe3e8; --accent: #1d4e9e; --bg: #f7f8fa; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--ink); background: var(--bg); }
+  main { max-width: 980px; margin: 0 auto; padding: 40px 20px 64px; }
+  .note { display: inline-block; font-size: 13px; color: var(--accent); border: 1px solid var(--accent); border-radius: 4px; padding: 2px 8px; margin-bottom: 14px; }
+  h1 { font-size: 30px; line-height: 1.2; margin: 0 0 8px; }
+  h2 { font-size: 19px; margin: 36px 0 12px; }
+  p { margin: 0 0 12px; color: var(--muted); max-width: 70ch; }
+  .viz { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 22px 0 6px; }
+  .viz img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; display: block; }
+  ul { list-style: none; padding: 0; margin: 0; background: #fff; border: 1px solid var(--line); border-radius: 8px; }
+  li { display: flex; justify-content: space-between; gap: 16px; padding: 12px 16px; border-top: 1px solid var(--line); }
+  li:first-child { border-top: 0; }
+  li span { color: var(--muted); font-size: 14px; }
+  a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  a:hover { text-decoration: underline; }
+  .main-dl { display: inline-block; margin-top: 8px; padding: 10px 16px; background: var(--accent); color: #fff; border-radius: 6px; }
+  .main-dl:hover { text-decoration: none; opacity: .92; }
+  footer { margin-top: 40px; font-size: 13px; color: var(--muted); }
+  @media (max-width: 700px) { .viz { grid-template-columns: 1fr; } li { flex-direction: column; gap: 2px; } }
+</style>
+</head>
+<body>
+<main>
+  <div class="note">Ukázka · zadání, stavebník i pozemek jsou smyšlené · není to projektová dokumentace</div>
+  <h1>Rodinný dům Ukázkov</h1>
+  <p>Studie ve třech variantách a dokumentace pro povolení stavby podle přílohy č. 1 vyhlášky 131/2024 Sb.: výkresy, textová část, statika, požární řešení a technika prostředí staveb jako návrh. Autorizovaná osoba ho zkontroluje, určí úpravy a podepíše.</p>
+  <p>Všechno vychází z jednoho BIM modelu (IFC). Z něj vznikají výkresy, plochy místností, výpisy prvků i výpočty. Na konci proběhne křížová kontrola modelu, výkresů a textů.</p>
+  <a class="main-dl" href="RD-Ukazkov-ukazka-DPS.pdf">Stáhnout celou ukázku v jednom PDF (21 stran)</a>
+  <div class="viz">
+    <img src="vizualizace/1-zahrada.jpg" alt="Vizualizace domu ze zahrady">
+    <img src="vizualizace/2-ulice.jpg" alt="Vizualizace domu z ulice">
+    <img src="vizualizace/3-obyvak.jpg" alt="Vizualizace obývacího pokoje s kuchyní">
+  </div>
+
+  <h2>Výkresy (vektorové PDF a DXF)</h2>
+  <ul>
+    <li><div>C.1 Situační výkres širších vztahů, 1:1000</div><div><a href="vykresy/C.1-situace-sirsich-vztahu.pdf">PDF</a> · <a href="vykresy/C.1-situace-sirsich-vztahu.dxf">DXF</a></div></li>
+    <li><div>C.2 Katastrální situační výkres, 1:500</div><div><a href="vykresy/C.2-katastralni-situace.pdf">PDF</a> · <a href="vykresy/C.2-katastralni-situace.dxf">DXF</a></div></li>
+    <li><div>C.3 Koordinační situační výkres, 1:200 <span>sítě, přípojky, vsak, PNP, bilance ploch</span></div><div><a href="vykresy/C.3-koordinacni-situace.pdf">PDF</a> · <a href="vykresy/C.3-koordinacni-situace.dxf">DXF</a></div></li>
+    <li><div>D.1.1.2-01 Půdorys 1.NP, 1:50 <span>výpisy místností, oken a dveří</span></div><div><a href="vykresy/D.1.1.2-01-pudorys-1NP.pdf">PDF</a> · <a href="vykresy/D.1.1.2-01-pudorys-1NP.dxf">DXF</a></div></li>
+    <li><div>D.1.1.2-02 Řezy A–A a B–B, 1:50 <span>skladby konstrukcí</span></div><div><a href="vykresy/D.1.1.2-02-rezy.pdf">PDF</a> · <a href="vykresy/D.1.1.2-02-rezy.dxf">DXF</a></div></li>
+    <li><div>D.1.1.2-03 Pohledy, 1:100</div><div><a href="vykresy/D.1.1.2-03-pohledy.pdf">PDF</a> · <a href="vykresy/D.1.1.2-03-pohledy.dxf">DXF</a></div></li>
+    <li><div>D.2.3-01 Výkres základů a krovu, 1:50 <span>výpis řeziva</span></div><div><a href="vykresy/D.2.3-01-zaklady-krov.pdf">PDF</a> · <a href="vykresy/D.2.3-01-zaklady-krov.dxf">DXF</a></div></li>
+  </ul>
+
+  <h2>Model, texty, studie</h2>
+  <ul>
+    <li><div>BIM model IFC4 <span>otevře ArchiCAD, Revit, Allplan</span></div><div><a href="rd-ukazkov-model.ifc">IFC</a></div></li>
+    <li><div>Textová část A, B, D.1.1, D.1.2, D.2 se statickým výpočtem, D.3, dokladová část</div><div><a href="textova-cast.docx">Word</a> · <a href="textova-cast.pdf">PDF</a></div></li>
+    <li><div>Architektonická studie, 3 varianty</div><div><a href="studie-3-varianty.pdf">PDF</a></div></li>
+    <li><div>Křížová kontrola modelu, výkresů a textů <span>42 kontrol, 0 chyb</span></div><div><a href="kontrola.txt">TXT</a></div></li>
+  </ul>
+
+  <footer>Josef Havel · Castable · <a href="mailto:josef@castable.cz">josef@castable.cz</a> · 11/2026</footer>
+</main>
+</body>
+</html>
