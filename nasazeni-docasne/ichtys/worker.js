@@ -2128,6 +2128,17 @@ p { margin: 0; }
 .zoom button { position: absolute; top: calc(12px + env(safe-area-inset-top, 0px)); right: 12px; }
 .strany { flex-wrap: wrap; align-items: center; }
 .strany span { min-width: 38px; text-align: center; color: var(--muted); }
+.lista-dole, .lista-dole__misto { display: none; }
+@media (max-width: 899px) {
+  .lista-dole { display: block; position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: color-mix(in oklab, var(--bg) 96%, transparent); backdrop-filter: blur(8px); border-top: 1px solid var(--line); padding: 12px 0 calc(12px + env(safe-area-inset-bottom, 0px)); }
+  .lista-dole .wrap { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+  .lista-dole .cena { font: 500 24px/1 var(--serif); }
+  .lista-dole .btn { min-height: 48px; flex: 1; max-width: 240px; }
+  .lista-dole__misto { display: block; height: calc(80px + env(safe-area-inset-bottom, 0px)); }
+  body:has(.lista-dole) .toast { bottom: calc(92px + env(safe-area-inset-bottom, 0px)); }
+  .detail .detail__obr { max-width: none; }
+  .galerie__hlavni { aspect-ratio: auto; height: min(46vh, 420px); }
+}
 .hlaska { padding: 14px 16px; border-radius: var(--r-sm); background: var(--accent-soft); }
 .hlaska--chyba { background: #f6e1e3; color: var(--sold); }
 .qr { width: 180px; height: 180px; background: #fff; padding: 8px; border-radius: 8px; }
@@ -3086,6 +3097,7 @@ async function detail(c, id) {
   </div>
   ${podobne.results.length ? `<h2 style="margin:64px 0 24px">Dal\u0161\xED knihy z oboru ${esc(katNazev)}</h2>${mrizka(podobne.results)}` : ""}
 </div></section>
+${naProdej ? `<div class="lista-dole" aria-label="Koupit"><div class="wrap"><span class="cena">${kc(k.cena)}</span><button class="btn btn--primary" type="button" data-pridat="${k.id}" data-velke="Do ko\u0161\xEDku" aria-pressed="false">Do ko\u0161\xEDku</button></div></div><div class="lista-dole__misto" aria-hidden="true"></div>` : ""}
 <div class="zoom" data-zoom role="dialog" aria-label="Fotka knihy"><img alt=""><button class="btn btn--line btn--sm" type="button" style="background:#fff">Zav\u0159\xEDt</button></div>`;
   return html(stranka(c, {
     titulek: `${k.autor ? `${k.autor}: ` : ""}${k.nazev} \xB7 ${OBCHOD.nazev}`,
@@ -3257,8 +3269,5 @@ async function importDat(c, p) {
 }
 var FAVICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#1d4b3c"/><path d="M5 16c4-6 13-8 18 0-5 8-14 6-18 0m18 0 4-4m-4 4 4 4" fill="none" stroke="#f5f2ea" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 export {
-  index_default as default,
-  nahodne,
-  nyni,
-  slugify
+  index_default as default
 };
