@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Autoškola Test Castable · jízdy</title>
+<script>window.API = "https://script.google.com/macros/s/AKfycbzeb5Q8SVp6JNWyTtPYy4SFWVXzyxgz7GfBzsUGS5sPCRQK8JB165KnmZasENDgPScesg/exec";</script>
+<style>
+:root{--bg:#eef1f4;--card:#fff;--ink:#14202e;--mute:#5b6878;--line:#dce2e9;--accent:#1d4e89;--accent-soft:#e4edf8;--ok:#e5f3e9;--ok-ink:#1d6a36;--red:#b3261e;--red-soft:#fbeae8;--zav:#f0f1f3;--nova:#fff4d6}
+html{color-scheme:light}
+*{box-sizing:border-box;min-width:0}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-text-size-adjust:100%}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid #7fa6d6;outline-offset:2px}
+.appka{max-width:520px;margin:0 auto;background:#fff;min-height:100vh;box-shadow:0 0 30px rgba(20,32,46,.06)}
+.hlava{position:sticky;top:0;z-index:3}
+.app-h{background:var(--accent);color:#fff;padding:14px 16px 12px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.app-h b{display:block;font-size:17px;font-weight:600;line-height:1.25}
+.app-h span{font-size:13px;opacity:.88}
+.app-h select{min-height:36px;border-radius:10px;border:0;padding:4px 8px;font-size:14px;max-width:48%}
+.obsah{padding:14px 14px 40px}
+.blok{margin-bottom:22px}
+.blok>h3{font-size:15px;font-weight:600;margin:0 0 8px}
+.pruh{height:8px;border-radius:4px;background:var(--accent-soft);overflow:hidden;margin:6px 0 2px}
+.pruh i{display:block;height:100%;background:var(--accent);border-radius:4px}
+.mala{font-size:13px}.mute{color:var(--mute)}
+.zprava{border-radius:12px;padding:10px 12px;margin:0 0 12px;font-size:14px;background:var(--ok);color:var(--ok-ink)}
+.zprava.pozor{background:var(--red-soft);color:var(--red)}
+.btn{min-height:44px;padding:0 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-size:15px}
+.btn:hover{border-color:var(--accent)}
+.btn.hl{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.cerv{color:var(--red);border-color:#e7c3bf}
+.btn.cerv.hl{background:var(--red);color:#fff;border-color:var(--red)}
+.btn[disabled],button[disabled]{opacity:.5;cursor:not-allowed}
+.velke{width:100%;min-height:50px;font-size:16px}
+.moje{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.moje li{border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.moje .kdy{font-weight:600;font-variant-numeric:tabular-nums}
+.akce{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.akce .btn{min-height:40px;padding:0 12px;font-size:14px}
+.dny{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.dny button{flex:0 0 auto;min-width:62px;min-height:54px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:13px;line-height:1.2;padding:4px 8px}
+.dny button b{display:block;font-size:15px;font-weight:600}
+.dny button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+.dny button.minuly{opacity:.6}
+.sloty{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.sloty button{min-height:56px;border-radius:12px;border:1px solid var(--line);background:#fff;text-align:left;padding:6px 12px;line-height:1.2}
+.sloty button b{display:block;font-size:16px;font-variant-numeric:tabular-nums}
+.sloty button span{font-size:12px;color:var(--mute)}
+.sloty button.volno{border-color:#b9d3bf;background:var(--ok)}
+.sloty button.volno span{color:var(--ok-ink);font-weight:500}
+.sloty button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+.sloty button[aria-pressed=true] span{color:#fff}
+.sloty button[disabled]{cursor:default;background:var(--zav);color:#9aa3ad;opacity:1}
+.ramec{border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:10px}
+label.pole{display:grid;gap:4px;font-size:14px;font-weight:500}
+select,input[type=text],input[type=email],input[type=tel],input[type=number]{width:100%;min-height:46px;padding:8px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:16px}
+.zatrh{display:flex;align-items:center;gap:10px;font-size:15px;min-height:40px}
+.zatrh input{width:20px;height:20px;accent-color:var(--accent)}
+.dnyvolba{display:flex;flex-wrap:wrap;gap:6px}
+.dnyvolba label{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:14px}
+.itaby{display:flex;gap:4px;padding:8px 10px;background:#fff;border-bottom:1px solid var(--line)}
+.itaby button{flex:1;min-height:40px;border:0;border-radius:10px;background:none;font-size:14px;font-weight:500}
+.itaby button[aria-pressed=true]{background:var(--accent-soft);color:var(--accent)}
+.den-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:12px 0 8px}
+.den-h h3{margin:0;font-size:16px;font-weight:600}
+.radky{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.radky li+li{border-top:1px solid var(--line)}
+.radek{display:grid;grid-template-columns:50px minmax(0,1fr) auto;gap:10px;align-items:center;width:100%;text-align:left;background:#fff;border:0;padding:10px 12px;min-height:58px}
+.radek:hover{background:#f7f9fb}
+.radek .c{font-weight:600;font-variant-numeric:tabular-nums}
+.radek b{display:block;font-weight:600}
+.radek .s{display:block;font-size:13px;color:var(--mute)}
+.radek.volno .s{color:var(--ok-ink)}
+.radek.zav{background:var(--zav)}
+.radek.minula{opacity:.62}
+.stitek{font-size:11px;font-weight:600;border-radius:8px;padding:2px 7px;white-space:nowrap}
+.stitek.nova{background:var(--nova);color:#7a5600}
+.stitek.pres{background:var(--accent-soft);color:var(--accent)}
+.stitek.ok{background:var(--ok);color:var(--ok-ink)}
+.stitek.ne{background:var(--red-soft);color:var(--red)}
+.detail h3{margin:0;font-size:17px}
+.detail dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:0;font-size:14px}
+.detail dt{color:var(--mute)}.detail dd{margin:0;overflow-wrap:anywhere}
+.detail a{color:var(--accent)}
+.zpet{background:none;border:0;min-height:40px;padding:0;font-weight:600;color:var(--accent);text-align:left}
+.tyden{display:grid;gap:8px}
+.tyden button{display:flex;justify-content:space-between;gap:10px;align-items:center;width:100%;min-height:54px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:8px 12px;text-align:left}
+.zaci{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.zaci li{border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.zaci .jm{display:flex;justify-content:space-between;gap:8px;font-weight:600}
+.odkaz{display:flex;gap:6px;margin-top:8px}
+.odkaz input{min-height:40px;font-size:13px;color:var(--mute)}
+.odkaz .btn{min-height:40px;padding:0 12px;font-size:14px;flex:0 0 auto}
+.nacitani{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:20px;padding:8px 16px;font-size:14px;z-index:9}
+</style>
+
+</head>
+<body data-token="">
+<script>document.body.dataset.token = new URLSearchParams(location.search).get("i") || "";</script>
+<div class="appka">
+  <div class="hlava">
+    <div class="app-h"><div><b id="nazev">Autoškola Test Castable</b><span id="kdo">Kalendář jízd</span></div><select id="volba-ins" hidden aria-label="Instruktor"></select></div>
+    <div class="itaby" role="group" aria-label="Pohled">
+      <button data-akce="tab" data-k="den" aria-pressed="true">Den</button>
+      <button data-akce="tab" data-k="tyden" aria-pressed="false">Týden</button>
+      <button data-akce="tab" data-k="zaci" aria-pressed="false">Žáci</button>
+      <button data-akce="tab" data-k="nast" aria-pressed="false">Nastavení</button>
+    </div>
+  </div>
+  <div class="obsah" id="obsah"><p class="mute">Načítám…</p></div>
+</div>
+<div class="nacitani" id="nacitani" hidden>Ukládám…</div>
+<script>
+'use strict';
+const TOKEN = document.body.dataset.token;
+const H = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const tvar = (n, a, b, c) => n === 1 ? a : (n >= 2 && n <= 4 ? b : c);
+let zaneprazdneno = false;
+function volej(fn, ...args) {
+  zaneprazdneno = true;
+  document.getElementById('nacitani').hidden = false;
+  document.querySelectorAll('button').forEach(b => { if (!b.disabled) { b.dataset.docasne = '1'; b.disabled = true; } });
+  const konec = () => {
+    zaneprazdneno = false;
+    document.getElementById('nacitani').hidden = true;
+    document.querySelectorAll('button[data-docasne]').forEach(b => { b.disabled = false; delete b.dataset.docasne; });
+  };
+  // window.API = adresa kalendáře (…/exec), když stránka neběží přímo v Googlu
+  const p = window.API
+    ? fetch(window.API, { method: 'POST', body: JSON.stringify({ f: fn, a: args }), credentials: 'omit' })
+        .catch(() => { throw new Error('Nepodařilo se spojit. Zkontrolujte připojení k internetu a zkuste to znovu.'); })
+        .then(r => r.json().catch(() => { throw new Error('Kalendář teď neodpovídá. Zkuste to prosím za chvíli.'); }))
+        .then(o => { if (o.chyba) throw new Error(o.chyba); return o.ok; })
+    : new Promise((ok, chyba) => { google.script.run.withSuccessHandler(ok).withFailureHandler(chyba)[fn](...args); });
+  return p.then(d => { konec(); return d; }, e => { konec(); throw e; });
+}
+function chybaText(e) {
+  const t = String((e && e.message) || e || '');
+  return t.replace(/^(Exception|Error|Výjimka|Chyba):\s*/i, '') || 'Něco se nepovedlo. Zkuste to prosím znovu.';
+}
+function kopiruj(input) {
+  input.select();
+  try { if (navigator.clipboard) navigator.clipboard.writeText(input.value); else document.execCommand('copy'); return true; }
+  catch (e) { try { document.execCommand('copy'); return true; } catch (e2) { return false; } }
+}
+</script>
+
+<script>
+let D = null;
+const S = { tab: 'den', den: null, detail: null, ins: '', msg: null };
+const DNY_N = ['neděle', 'pondělí', 'úterý', 'středa', 'čtvrtek', 'pátek', 'sobota'];
+
+function nacti(d) {
+  D = d;
+  S.ins = d.ins.id;
+  if (d.zprava) S.msg = { t: d.zprava };
+  if (S.den === null || !D.dny.some(x => x.d === S.den)) {
+    const dnes = D.dny.find(x => !x.minuly);
+    S.den = dnes ? dnes.d : (D.dny[0] && D.dny[0].d);
+  }
+  vykresli();
+}
+function chyba(e) { S.msg = { t: chybaText(e), pozor: true }; vykresli(); }
+const den = k => D.dny.find(x => x.d === k);
+const radek = t => { for (const d of D.dny) { const r = d.radky.find(x => x.t === t); if (r) return r; } return null; };
+const val = id => { const e = document.getElementById(id); return e ? e.value : ''; };
+const zprava = () => S.msg ? `<p class="zprava ${S.msg.pozor ? 'pozor' : ''}" role="status">${H(S.msg.t)}</p>` : '';
+
+function radekHtml(r) {
+  if (r.typ === 'jizda') {
+    const j = r.jizda;
+    let st = '';
+    if (j.stav === 'neprisel') st = '<span class="stitek ne">nepřišel</span>';
+    else if (r.minula) st = '<span class="stitek ok">proběhla</span>';
+    else if (j.nova && !j.presunuta) st = '<span class="stitek nova">nová</span>';
+    else if (j.presunuta) st = '<span class="stitek pres">přesunutá</span>';
+    return `<li><button class="radek ${r.minula ? 'minula' : ''}" data-akce="detail-jizda" data-t="${H(r.t)}"><span class="c">${H(r.cas)}</span><span><b>${H(j.jmeno)}</b><span class="s">${j.cislo ? j.cislo + '. jízda · ' : ''}${H(j.misto)}</span></span>${st}</button></li>`;
+  }
+  if (r.typ === 'zavreno') return `<li><button class="radek zav" data-akce="detail-slot" data-t="${H(r.t)}"><span class="c">${H(r.cas)}</span><span><b>Zavřeno</b><span class="s">${H(r.duvod)}</span></span></button></li>`;
+  return `<li><button class="radek volno ${r.minula ? 'minula' : ''}" data-akce="detail-slot" data-t="${H(r.t)}"><span class="c">${H(r.cas)}</span><span><b>${r.minula ? '—' : 'Volno'}</b><span class="s">${r.minula ? '' : 'žáci si ho mohou zapsat'}${r.zrusil ? ' · zrušil(a) ' + H(r.zrusil) : ''}</span></span></button></li>`;
+}
+
+function pohledDen() {
+  const d = den(S.den);
+  if (!d) return '<p class="mute">V nastavení nejsou žádné dny ani časy jízd.</p>';
+  const dny = D.dny.map(x => `<button class="${x.minuly ? 'minuly' : ''}" data-akce="den" data-d="${H(x.d)}" aria-pressed="${S.den === x.d}">${H(x.kratce)}<b>${H(x.datum)}</b></button>`).join('');
+  const n = d.radky.filter(r => r.typ === 'jizda' && r.jizda.stav !== 'neprisel').length;
+  const otevreno = d.radky.some(r => r.typ !== 'zavreno' && !r.minula);
+  return `<div class="dny" role="group" aria-label="Den" id="pas-dnu">${dny}</div>
+    <div class="den-h"><h3>${H(d.nazev)}</h3><span class="mala mute">${n} ${tvar(n, 'jízda', 'jízdy', 'jízd')}</span></div>
+    <ul class="radky">${d.radky.map(radekHtml).join('')}</ul>
+    ${!d.minuly && otevreno ? `<button class="btn cerv" style="margin-top:12px;width:100%" data-akce="zavrit-den-dotaz">Celý den nejezdím (nemoc, dovolená)</button>` : ''}
+    ${S.zavritDen === d.d ? `<div class="ramec" style="margin-top:10px"><label class="pole">Důvod pro žáky<input type="text" id="duvod-den" value="Instruktor nejezdí"></label>
+      <button class="btn cerv hl" data-akce="zavrit-den">Zavřít celý den a dát žákům vědět</button><button class="btn" data-akce="zavrit-den-ne">Nechat</button></div>` : ''}`;
+}
+
+function pohledTyden() {
+  return '<div class="tyden">' + D.dny.filter(x => !x.minuly).map(x => {
+    const n = x.radky.filter(r => r.typ === 'jizda' && r.jizda.stav !== 'neprisel').length;
+    const v = x.radky.filter(r => r.typ === 'volno' && !r.minula).length;
+    return `<button data-akce="den-z-tydne" data-d="${H(x.d)}"><b>${H(x.nazev)}</b><span class="mala mute">${n} ${tvar(n, 'jízda', 'jízdy', 'jízd')} · ${v} volno</span></button>`;
+  }).join('') + '</div>';
+}
+
+function formZak(z) {
+  const nov = !z;
+  z = z || { jmeno: '', email: '', telefon: '', odjetoPred: 0 };
+  const insVolba = D.instruktori && D.instruktori.length > 1
+    ? `<label class="pole">Instruktor<select id="z-ins">${D.instruktori.map(i => `<option value="${H(i.id)}" ${i.id === S.ins ? 'selected' : ''}>${H(i.jmeno)}</option>`).join('')}</select></label>` : '';
+  return `<button class="zpet" data-akce="zpet">‹ Zpět</button><div class="ramec">
+    <h3 style="margin:0">${nov ? 'Nový žák' : 'Upravit žáka'}</h3>
+    <label class="pole">Jméno a příjmení<input type="text" id="z-jmeno" value="${H(z.jmeno)}" autocomplete="off"></label>
+    <label class="pole">E-mail (sem chodí potvrzení a připomínky)<input type="email" id="z-email" value="${H(z.email)}" autocomplete="off"></label>
+    <label class="pole">Telefon<input type="tel" id="z-tel" value="${H(z.telefon)}" autocomplete="off"></label>
+    <label class="pole">Kolik jízd už má odjeto mimo kalendář<input type="number" min="0" id="z-pred" value="${H(z.odjetoPred)}"></label>
+    ${nov ? insVolba : ''}
+    ${nov ? '<label class="zatrh"><input type="checkbox" id="z-poslat" checked> Poslat žákovi jeho odkaz e-mailem</label>'
+          : '<label class="zatrh"><input type="checkbox" id="z-konec"> Dokončil(a) kurz (odkaz přestane fungovat)</label>'}
+    <button class="btn hl velke" data-akce="${nov ? 'zak-pridat' : 'zak-ulozit'}" data-id="${nov ? '' : H(z.id)}">${nov ? 'Přidat žáka' : 'Uložit'}</button>
+  </div>`;
+}
+
+function pohledZaci() {
+  if (S.detail && S.detail.typ === 'novy-zak') return formZak(null);
+  if (S.detail && S.detail.typ === 'zak') return formZak(D.zaci.find(z => z.id === S.detail.id));
+  const seznam = D.zaci.map(z => `<li><div class="jm"><span>${H(z.jmeno)}</span><span class="mala mute">${z.odjeto} z ${D.celkem}</span></div>
+      <div class="pruh"><i style="width:${Math.min(100, z.odjeto / D.celkem * 100)}%"></i></div>
+      ${z.dalsi ? `<div class="mala mute">Další jízda: ${H(z.dalsi)}</div>` : '<div class="mala" style="color:var(--red);font-weight:500">Nemá zapsanou další jízdu</div>'}
+      ${!z.dalsi ? (z.pripomenuto ? `<div class="mala mute" style="margin-top:6px">Připomínka odešla ${H(z.pripomenuto)}.</div>` : (z.email ? `<button class="btn" style="margin-top:8px;min-height:40px;font-size:14px" data-akce="pripomenout" data-id="${H(z.id)}">Poslat připomínku, ať si zapíše jízdu</button>` : '')) : ''}
+      ${z.odkaz ? `<div class="odkaz"><input type="text" readonly value="${H(z.odkaz)}" aria-label="Odkaz žáka"><button class="btn" data-akce="kopirovat">Kopírovat</button></div>` : ''}
+      <div class="akce"><button class="btn" data-akce="zak-upravit" data-id="${H(z.id)}">Upravit</button></div>
+    </li>`).join('');
+  return `<button class="btn hl velke" data-akce="novy-zak" style="margin-bottom:12px">+ Přidat žáka</button>
+    <p class="mala mute" style="margin:0 0 10px">Každý žák má vlastní odkaz. Kolik má kdo odjeto, počítá kalendář sám.</p>
+    ${D.zaci.length ? `<ul class="zaci">${seznam}</ul>` : '<p class="mute">Zatím tu nejsou žádní žáci.</p>'}`;
+}
+
+function pohledNast() {
+  const i = D.ins;
+  const dnyV = [1, 2, 3, 4, 5, 6, 0].map(n => `<label><input type="checkbox" class="n-den" value="${n}" ${i.dny.indexOf(n) >= 0 ? 'checked' : ''}> ${DNY_N[n]}</label>`).join('');
+  let h = `<div class="ramec blok"><h3 style="margin:0">${D.ja.id === i.id ? 'Moje jízdy' : 'Jízdy: ' + H(i.jmeno)}</h3>
+    <label class="pole">Jméno<input type="text" id="n-jmeno" value="${H(i.jmeno)}"></label>
+    <label class="pole">Telefon (uvidí ho žáci)<input type="tel" id="n-tel" value="${H(i.telefon)}"></label>
+    <label class="pole">E-mail (večer sem přijde přehled na zítřek)<input type="email" id="n-email" value="${H(i.email)}"></label>
+    <label class="pole">Časy jízd<input type="text" id="n-casy" value="${H(i.casy)}"></label>
+    <p class="mala mute" style="margin:-4px 0 0">Pište oddělené čárkou, třeba 7:00, 8:45, 10:30.</p>
+    <label class="pole">Jak dlouho trvá jízda (minuty)<input type="number" min="15" step="5" id="n-delka" value="${H(i.delka)}"></label>
+    <div class="pole"><span style="font-size:14px;font-weight:500">Dny, kdy jezdíte</span><div class="dnyvolba">${dnyV}</div></div>`;
+  if (D.nastaveni) {
+    const n = D.nastaveni;
+    h += `<h3 style="margin:8px 0 0">Celá autoškola</h3>
+    <label class="pole">Název autoškoly<input type="text" id="o-nazev" value="${H(n.nazev)}"></label>
+    <label class="pole">Kolik jízd má kurz<input type="number" min="1" id="o-celkem" value="${H(n.celkem_jizd)}"></label>
+    <label class="pole">Místa vyzvednutí (oddělená středníkem)<input type="text" id="o-mista" value="${H(n.mista)}"></label>
+    <label class="pole">Žák smí jízdu přesunout nebo zrušit nejpozději (hodin předem)<input type="number" min="0" id="o-zmena" value="${H(n.zmena_hodin)}"></label>
+    <label class="pole">Žák si smí jízdu zapsat nejpozději (hodin předem)<input type="number" min="0" id="o-predem" value="${H(n.predem_hodin)}"></label>
+    <label class="pole">Kolik jízd smí mít žák zapsaných najednou<input type="number" min="1" id="o-max" value="${H(n.max_zapsanych)}"></label>
+    <label class="pole">Na kolik dní dopředu si žáci zapisují<input type="number" min="1" id="o-dopredu" value="${H(n.dny_dopredu)}"></label>
+    <label class="pole">V kolik hodin den předem chodí připomínka<input type="number" min="6" max="22" id="o-hodina" value="${H(n.hodina_pripominky)}"></label>`;
+  }
+  h += `<button class="btn hl velke" data-akce="nast-ulozit">Uložit nastavení</button></div>`;
+  if (D.instruktori) {
+    h += `<div class="blok"><h3>Instruktoři</h3><ul class="zaci">${D.instruktori.map(x => `<li><div class="jm"><span>${H(x.jmeno)}</span><span class="mala mute">${x.majitel ? 'majitel' : ''}</span></div>
+      ${x.odkaz ? `<div class="odkaz"><input type="text" readonly value="${H(x.odkaz)}" aria-label="Odkaz instruktora"><button class="btn" data-akce="kopirovat">Kopírovat</button></div>` : ''}</li>`).join('')}</ul>
+      <div class="ramec" style="margin-top:10px"><h3 style="margin:0">Přidat instruktora</h3>
+      <label class="pole">Jméno<input type="text" id="i-jmeno"></label>
+      <label class="pole">E-mail<input type="email" id="i-email"></label>
+      <label class="pole">Telefon<input type="tel" id="i-tel"></label>
+      <label class="zatrh"><input type="checkbox" id="i-poslat" checked> Poslat mu odkaz e-mailem</label>
+      <button class="btn velke" data-akce="instr-pridat">Přidat instruktora</button></div></div>`;
+  }
+  return h;
+}
+
+function detailJizda(r) {
+  const j = r.jizda;
+  const kdy = den(r.t.slice(0, 10));
+  return `<button class="zpet" data-akce="zpet">‹ Zpět</button><div class="ramec detail">
+    <h3>${H(j.jmeno)}</h3>
+    <dl><dt>Kdy</dt><dd>${H(kdy ? kdy.nazev : '')} v ${H(r.cas)}</dd>
+    <dt>Jízda</dt><dd>${j.stav === 'neprisel' ? 'nepřišel(a), nepočítá se' : j.cislo + '. z ' + D.celkem}</dd>
+    <dt>Vyzvednutí</dt><dd>${H(j.misto)}</dd>
+    <dt>Odjeto</dt><dd>${j.odjeto} z ${D.celkem}</dd>
+    ${j.telefon ? `<dt>Telefon</dt><dd><a href="tel:${H(j.telefon.replace(/\s/g, ''))}">${H(j.telefon)}</a></dd>` : ''}
+    ${j.email ? `<dt>E-mail</dt><dd>${H(j.email)}</dd>` : ''}</dl>
+    ${r.minula
+      ? (j.stav === 'neprisel' ? `<button class="btn" data-akce="neprisel" data-id="${H(j.id)}" data-v="0">Přece jen přišel(a)</button>`
+        : `<button class="btn cerv" data-akce="neprisel" data-id="${H(j.id)}" data-v="1">Nepřišel(a)</button><p class="mala mute" style="margin:0">Proběhlá jízda se započítá sama.</p>`)
+      : `<label class="pole">Důvod pro žáka<input type="text" id="duvod" placeholder="například auto v servisu"></label><button class="btn cerv" data-akce="zrusit" data-id="${H(j.id)}">Zrušit jízdu a dát žákovi vědět</button>`}
+  </div>`;
+}
+
+function detailSlot(r) {
+  const kdy = den(r.t.slice(0, 10));
+  const hlava = `<button class="zpet" data-akce="zpet">‹ Zpět</button><div class="ramec detail"><h3>${H(kdy ? kdy.nazev : '')} v ${H(r.cas)}</h3>`;
+  if (r.minula) return hlava + '<p class="mala mute" style="margin:0">Tenhle čas už je pryč.</p></div>';
+  if (r.typ === 'zavreno') return hlava + `<p class="mala" style="margin:0">Zavřeno: ${H(r.duvod)}</p><button class="btn hl" data-akce="otevrit" data-t="${H(r.t)}">Otevřít pro žáky</button></div>`;
+  const zaci = D.zaci.length ? `<label class="pole">Zapsat žáka<select id="s-zak"><option value="">Vyberte žáka</option>${D.zaci.map(z => `<option value="${H(z.id)}">${H(z.jmeno)} (${z.odjeto} z ${D.celkem})</option>`).join('')}</select></label>
+      ${D.mista.length > 1 ? `<label class="pole">Vyzvednutí<select id="s-misto">${D.mista.map(m => `<option>${H(m)}</option>`).join('')}</select></label>` : ''}
+      <button class="btn hl" data-akce="zapsat" data-t="${H(r.t)}">Zapsat jízdu</button>` : '';
+  return hlava + `<p class="mala mute" style="margin:0">Volný čas. Žáci si ho mohou zapsat sami.</p>${zaci}
+    <label class="pole">Nebo ho zavřete<input type="text" id="duvod" value="Volno"></label>
+    <button class="btn" data-akce="zavrit" data-t="${H(r.t)}">Zavřít tento čas</button></div>`;
+}
+
+function vykresli() {
+  if (!D) return;
+  document.getElementById('nazev').textContent = D.nazev;
+  document.getElementById('kdo').textContent = 'Instruktor ' + D.ins.jmeno;
+  const sel = document.getElementById('volba-ins');
+  if (D.instruktori && D.instruktori.length > 1) {
+    sel.hidden = false;
+    sel.innerHTML = D.instruktori.map(i => `<option value="${H(i.id)}" ${i.id === S.ins ? 'selected' : ''}>${H(i.jmeno)}</option>`).join('');
+  } else sel.hidden = true;
+  document.querySelectorAll('[data-akce=tab]').forEach(b => b.setAttribute('aria-pressed', b.dataset.k === S.tab));
+  let h;
+  if (S.detail && S.detail.typ === 'jizda') { const r = radek(S.detail.t); h = r && r.typ === 'jizda' ? detailJizda(r) : (S.detail = null, pohledDen()); }
+  else if (S.detail && S.detail.typ === 'slot') { const r = radek(S.detail.t); h = r && r.typ !== 'jizda' ? detailSlot(r) : (S.detail = null, pohledDen()); }
+  else if (S.tab === 'den') h = pohledDen();
+  else if (S.tab === 'tyden') h = pohledTyden();
+  else if (S.tab === 'zaci') h = pohledZaci();
+  else h = pohledNast();
+  document.getElementById('obsah').innerHTML = zprava() + h;
+  const vyb = document.querySelector('#pas-dnu [aria-pressed=true]');
+  if (vyb) vyb.scrollIntoView({ block: 'nearest', inline: 'center' });
+}
+
+document.getElementById('volba-ins').addEventListener('change', e => {
+  S.ins = e.target.value; S.detail = null; S.den = null; S.msg = null;
+  volej('instrData', TOKEN, S.ins).then(nacti, chyba);
+});
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-akce]'); if (!b || b.disabled || zaneprazdneno) return;
+  const a = b.dataset.akce;
+  const po = p => p.then(d => { S.detail = null; nacti(d); window.scrollTo(0, 0); }, chyba);
+  if (['zrusit', 'neprisel', 'zavrit', 'otevrit', 'zapsat', 'zavrit-den', 'pripomenout', 'zak-pridat', 'zak-ulozit', 'nast-ulozit', 'instr-pridat'].indexOf(a) < 0) S.msg = null;
+  switch (a) {
+    case 'tab': S.tab = b.dataset.k; S.detail = null; S.zavritDen = null; break;
+    case 'den': S.den = b.dataset.d; S.detail = null; S.zavritDen = null; break;
+    case 'den-z-tydne': S.den = b.dataset.d; S.tab = 'den'; S.detail = null; break;
+    case 'zpet': S.detail = null; break;
+    case 'detail-jizda': {
+      S.detail = { typ: 'jizda', t: b.dataset.t };
+      const r = radek(b.dataset.t);
+      if (r && r.jizda && (r.jizda.nova || r.jizda.presunuta)) { volej('instrVidel', TOKEN, S.ins, r.jizda.id).then(d => { D = d; S.ins = d.ins.id; vykresli(); }, chyba); }
+      break;
+    }
+    case 'detail-slot': S.detail = { typ: 'slot', t: b.dataset.t }; break;
+    case 'zrusit': po(volej('instrZrusit', TOKEN, S.ins, b.dataset.id, val('duvod'))); return;
+    case 'neprisel': po(volej('instrNeprisel', TOKEN, S.ins, b.dataset.id, b.dataset.v === '1')); return;
+    case 'zavrit': po(volej('instrZavrit', TOKEN, S.ins, b.dataset.t, val('duvod'))); return;
+    case 'otevrit': po(volej('instrOtevrit', TOKEN, S.ins, b.dataset.t)); return;
+    case 'zapsat':
+      if (!val('s-zak')) { S.msg = { t: 'Vyberte žáka.', pozor: true }; break; }
+      po(volej('instrZapsat', TOKEN, S.ins, val('s-zak'), b.dataset.t, val('s-misto') || D.mista[0])); return;
+    case 'zavrit-den-dotaz': S.zavritDen = S.den; break;
+    case 'zavrit-den-ne': S.zavritDen = null; break;
+    case 'zavrit-den': { const d = S.den; S.zavritDen = null; po(volej('instrZavritDen', TOKEN, S.ins, d, val('duvod-den'))); return; }
+    case 'pripomenout': po(volej('instrPripomenout', TOKEN, S.ins, b.dataset.id)); return;
+    case 'novy-zak': S.detail = { typ: 'novy-zak' }; break;
+    case 'zak-upravit': S.detail = { typ: 'zak', id: b.dataset.id }; break;
+    case 'zak-pridat': case 'zak-ulozit': {
+      const data = { id: b.dataset.id || '', jmeno: val('z-jmeno'), email: val('z-email'), telefon: val('z-tel'), odjetoPred: val('z-pred'), instruktor: val('z-ins') };
+      const p = document.getElementById('z-poslat'), k = document.getElementById('z-konec');
+      data.poslat = !!(p && p.checked); data.dokoncil = !!(k && k.checked);
+      po(volej('instrZak', TOKEN, S.ins, data)); return;
+    }
+    case 'nast-ulozit': {
+      const data = { jmeno: val('n-jmeno'), telefon: val('n-tel'), email: val('n-email'), casy: val('n-casy'), delka: val('n-delka'), dny: [...document.querySelectorAll('.n-den:checked')].map(x => +x.value) };
+      if (D.nastaveni) data.obecne = { nazev: val('o-nazev'), celkem_jizd: val('o-celkem'), mista: val('o-mista'), zmena_hodin: val('o-zmena'), predem_hodin: val('o-predem'), max_zapsanych: val('o-max'), dny_dopredu: val('o-dopredu'), hodina_pripominky: val('o-hodina') };
+      po(volej('instrNastaveni', TOKEN, S.ins, data)); return;
+    }
+    case 'instr-pridat': po(volej('instrPridatInstruktora', TOKEN, { jmeno: val('i-jmeno'), email: val('i-email'), telefon: val('i-tel'), poslat: document.getElementById('i-poslat').checked })); return;
+    case 'kopirovat': { const inp = b.parentElement.querySelector('input'); const ok = kopiruj(inp); b.textContent = ok ? 'Zkopírováno' : 'Označeno'; return; }
+  }
+  vykresli();
+});
+volej('instrData', TOKEN, '').then(nacti, e => { document.getElementById('obsah').innerHTML = `<p class="zprava pozor">${H(chybaText(e))}</p>`; });
+</script>
+</body>
+</html>

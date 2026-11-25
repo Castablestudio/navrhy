@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Autoškola Test Castable · jízdy</title>
+<script>if (new URLSearchParams(location.search).get("i")) location.replace("instruktor.html" + location.search);</script>
+<script>window.API = "https://script.google.com/macros/s/AKfycbzeb5Q8SVp6JNWyTtPYy4SFWVXzyxgz7GfBzsUGS5sPCRQK8JB165KnmZasENDgPScesg/exec";</script>
+<style>
+:root{--bg:#eef1f4;--card:#fff;--ink:#14202e;--mute:#5b6878;--line:#dce2e9;--accent:#1d4e89;--accent-soft:#e4edf8;--ok:#e5f3e9;--ok-ink:#1d6a36;--red:#b3261e;--red-soft:#fbeae8;--zav:#f0f1f3;--nova:#fff4d6}
+html{color-scheme:light}
+*{box-sizing:border-box;min-width:0}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-text-size-adjust:100%}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid #7fa6d6;outline-offset:2px}
+.appka{max-width:520px;margin:0 auto;background:#fff;min-height:100vh;box-shadow:0 0 30px rgba(20,32,46,.06)}
+.hlava{position:sticky;top:0;z-index:3}
+.app-h{background:var(--accent);color:#fff;padding:14px 16px 12px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.app-h b{display:block;font-size:17px;font-weight:600;line-height:1.25}
+.app-h span{font-size:13px;opacity:.88}
+.app-h select{min-height:36px;border-radius:10px;border:0;padding:4px 8px;font-size:14px;max-width:48%}
+.obsah{padding:14px 14px 40px}
+.blok{margin-bottom:22px}
+.blok>h3{font-size:15px;font-weight:600;margin:0 0 8px}
+.pruh{height:8px;border-radius:4px;background:var(--accent-soft);overflow:hidden;margin:6px 0 2px}
+.pruh i{display:block;height:100%;background:var(--accent);border-radius:4px}
+.mala{font-size:13px}.mute{color:var(--mute)}
+.zprava{border-radius:12px;padding:10px 12px;margin:0 0 12px;font-size:14px;background:var(--ok);color:var(--ok-ink)}
+.zprava.pozor{background:var(--red-soft);color:var(--red)}
+.btn{min-height:44px;padding:0 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-size:15px}
+.btn:hover{border-color:var(--accent)}
+.btn.hl{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.cerv{color:var(--red);border-color:#e7c3bf}
+.btn.cerv.hl{background:var(--red);color:#fff;border-color:var(--red)}
+.btn[disabled],button[disabled]{opacity:.5;cursor:not-allowed}
+.velke{width:100%;min-height:50px;font-size:16px}
+.moje{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.moje li{border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.moje .kdy{font-weight:600;font-variant-numeric:tabular-nums}
+.akce{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.akce .btn{min-height:40px;padding:0 12px;font-size:14px}
+.dny{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.dny button{flex:0 0 auto;min-width:62px;min-height:54px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:13px;line-height:1.2;padding:4px 8px}
+.dny button b{display:block;font-size:15px;font-weight:600}
+.dny button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+.dny button.minuly{opacity:.6}
+.sloty{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.sloty button{min-height:56px;border-radius:12px;border:1px solid var(--line);background:#fff;text-align:left;padding:6px 12px;line-height:1.2}
+.sloty button b{display:block;font-size:16px;font-variant-numeric:tabular-nums}
+.sloty button span{font-size:12px;color:var(--mute)}
+.sloty button.volno{border-color:#b9d3bf;background:var(--ok)}
+.sloty button.volno span{color:var(--ok-ink);font-weight:500}
+.sloty button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+.sloty button[aria-pressed=true] span{color:#fff}
+.sloty button[disabled]{cursor:default;background:var(--zav);color:#9aa3ad;opacity:1}
+.ramec{border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:10px}
+label.pole{display:grid;gap:4px;font-size:14px;font-weight:500}
+select,input[type=text],input[type=email],input[type=tel],input[type=number]{width:100%;min-height:46px;padding:8px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:16px}
+.zatrh{display:flex;align-items:center;gap:10px;font-size:15px;min-height:40px}
+.zatrh input{width:20px;height:20px;accent-color:var(--accent)}
+.dnyvolba{display:flex;flex-wrap:wrap;gap:6px}
+.dnyvolba label{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:14px}
+.itaby{display:flex;gap:4px;padding:8px 10px;background:#fff;border-bottom:1px solid var(--line)}
+.itaby button{flex:1;min-height:40px;border:0;border-radius:10px;background:none;font-size:14px;font-weight:500}
+.itaby button[aria-pressed=true]{background:var(--accent-soft);color:var(--accent)}
+.den-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:12px 0 8px}
+.den-h h3{margin:0;font-size:16px;font-weight:600}
+.radky{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.radky li+li{border-top:1px solid var(--line)}
+.radek{display:grid;grid-template-columns:50px minmax(0,1fr) auto;gap:10px;align-items:center;width:100%;text-align:left;background:#fff;border:0;padding:10px 12px;min-height:58px}
+.radek:hover{background:#f7f9fb}
+.radek .c{font-weight:600;font-variant-numeric:tabular-nums}
+.radek b{display:block;font-weight:600}
+.radek .s{display:block;font-size:13px;color:var(--mute)}
+.radek.volno .s{color:var(--ok-ink)}
+.radek.zav{background:var(--zav)}
+.radek.minula{opacity:.62}
+.stitek{font-size:11px;font-weight:600;border-radius:8px;padding:2px 7px;white-space:nowrap}
+.stitek.nova{background:var(--nova);color:#7a5600}
+.stitek.pres{background:var(--accent-soft);color:var(--accent)}
+.stitek.ok{background:var(--ok);color:var(--ok-ink)}
+.stitek.ne{background:var(--red-soft);color:var(--red)}
+.detail h3{margin:0;font-size:17px}
+.detail dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:0;font-size:14px}
+.detail dt{color:var(--mute)}.detail dd{margin:0;overflow-wrap:anywhere}
+.detail a{color:var(--accent)}
+.zpet{background:none;border:0;min-height:40px;padding:0;font-weight:600;color:var(--accent);text-align:left}
+.tyden{display:grid;gap:8px}
+.tyden button{display:flex;justify-content:space-between;gap:10px;align-items:center;width:100%;min-height:54px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:8px 12px;text-align:left}
+.zaci{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.zaci li{border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.zaci .jm{display:flex;justify-content:space-between;gap:8px;font-weight:600}
+.odkaz{display:flex;gap:6px;margin-top:8px}
+.odkaz input{min-height:40px;font-size:13px;color:var(--mute)}
+.odkaz .btn{min-height:40px;padding:0 12px;font-size:14px;flex:0 0 auto}
+.nacitani{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:20px;padding:8px 16px;font-size:14px;z-index:9}
+</style>
+
+</head>
+<body data-token="">
+<script>document.body.dataset.token = new URLSearchParams(location.search).get("z") || "";</script>
+<div class="appka">
+  <div class="hlava"><div class="app-h"><div><b id="nazev">Autoškola Test Castable</b><span id="kdo">Vaše jízdy</span></div></div></div>
+  <div class="obsah" id="obsah"><p class="mute">Načítám…</p></div>
+</div>
+<div class="nacitani" id="nacitani" hidden>Ukládám…</div>
+<script>
+'use strict';
+const TOKEN = document.body.dataset.token;
+const H = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const tvar = (n, a, b, c) => n === 1 ? a : (n >= 2 && n <= 4 ? b : c);
+let zaneprazdneno = false;
+function volej(fn, ...args) {
+  zaneprazdneno = true;
+  document.getElementById('nacitani').hidden = false;
+  document.querySelectorAll('button').forEach(b => { if (!b.disabled) { b.dataset.docasne = '1'; b.disabled = true; } });
+  const konec = () => {
+    zaneprazdneno = false;
+    document.getElementById('nacitani').hidden = true;
+    document.querySelectorAll('button[data-docasne]').forEach(b => { b.disabled = false; delete b.dataset.docasne; });
+  };
+  // window.API = adresa kalendáře (…/exec), když stránka neběží přímo v Googlu
+  const p = window.API
+    ? fetch(window.API, { method: 'POST', body: JSON.stringify({ f: fn, a: args }), credentials: 'omit' })
+        .catch(() => { throw new Error('Nepodařilo se spojit. Zkontrolujte připojení k internetu a zkuste to znovu.'); })
+        .then(r => r.json().catch(() => { throw new Error('Kalendář teď neodpovídá. Zkuste to prosím za chvíli.'); }))
+        .then(o => { if (o.chyba) throw new Error(o.chyba); return o.ok; })
+    : new Promise((ok, chyba) => { google.script.run.withSuccessHandler(ok).withFailureHandler(chyba)[fn](...args); });
+  return p.then(d => { konec(); return d; }, e => { konec(); throw e; });
+}
+function chybaText(e) {
+  const t = String((e && e.message) || e || '');
+  return t.replace(/^(Exception|Error|Výjimka|Chyba):\s*/i, '') || 'Něco se nepovedlo. Zkuste to prosím znovu.';
+}
+function kopiruj(input) {
+  input.select();
+  try { if (navigator.clipboard) navigator.clipboard.writeText(input.value); else document.execCommand('copy'); return true; }
+  catch (e) { try { document.execCommand('copy'); return true; } catch (e2) { return false; } }
+}
+</script>
+
+<script>
+let D = null;
+const S = { den: 0, vyber: null, misto: null, presun: null, rusit: null, msg: null };
+
+function nacti(d) {
+  D = d;
+  if (d.zprava) S.msg = { t: d.zprava };
+  S.vyber = null; S.rusit = null;
+  if (!S.misto || D.mista.indexOf(S.misto) < 0) S.misto = D.mista[0];
+  if (S.den >= D.dny.length) S.den = 0;
+  if (S.den === 0 && D.dny.length > 1 && !D.dny[0].sloty.some(s => s.stav === 'volno')) S.den = 1;
+  vykresli();
+}
+function chyba(e) { S.msg = { t: chybaText(e), pozor: true }; vykresli(); }
+
+function vykresli() {
+  const el = document.getElementById('obsah');
+  if (!D) return;
+  document.getElementById('nazev').textContent = D.nazev;
+  document.getElementById('kdo').textContent = D.jmeno;
+  const plno = D.moje.length >= D.max && !S.presun;
+  const moje = D.moje.length ? '<ul class="moje">' + D.moje.map(j => `<li><div class="kdy">${H(j.nazev)}</div>
+      <div class="mala mute">${j.cislo}. jízda · vyzvednutí: ${H(j.misto)}</div>
+      ${j.lzeMenit ? (S.rusit === j.id
+        ? `<div class="akce"><button class="btn cerv hl" data-akce="zrusit-ano" data-id="${H(j.id)}">Ano, zrušit jízdu</button><button class="btn" data-akce="zrusit-ne">Nechat</button></div>`
+        : `<div class="akce"><button class="btn" data-akce="presun" data-id="${H(j.id)}">${S.presun === j.id ? 'Vyberte nový čas níž' : 'Přesunout'}</button><button class="btn cerv" data-akce="zrusit" data-id="${H(j.id)}">Zrušit</button></div>`)
+      : `<div class="mala mute" style="margin-top:6px">Méně než ${D.zmena} hodin předem se jízda mění jen po domluvě s instruktorem${D.telefon ? `: <a href="tel:${H(D.telefon.replace(/\s/g, ''))}">${H(D.telefon)}</a>` : ''}.</div>`}
+    </li>`).join('') + '</ul>' : '<p class="mala mute" style="margin:0">Teď nemáte zapsanou žádnou jízdu.</p>';
+  let pridat;
+  if (plno) {
+    pridat = `<p class="mala mute" style="margin:0">Najednou můžete mít zapsané ${D.max} ${tvar(D.max, 'jízdu', 'jízdy', 'jízd')}. Další si přidáte po té nejbližší.</p>`;
+  } else {
+    const den = D.dny[S.den];
+    const dny = D.dny.map((d, i) => `<button data-akce="den" data-i="${i}" aria-pressed="${S.den === i}">${H(d.kratce)}<b>${H(d.datum)}</b></button>`).join('');
+    const popis = { volno: 'volno', obsazeno: 'obsazeno', vase: 'vaše jízda', zavreno: 'nejezdí se', minulo: 'už proběhlo', pozde: 'už jen telefonicky' };
+    const sloty = den ? den.sloty.map(s => `<button class="${s.stav === 'volno' ? 'volno' : ''}" data-akce="slot" data-t="${H(s.t)}" ${s.stav === 'volno' ? '' : 'disabled'} aria-pressed="${S.vyber === s.t}"><b>${H(s.cas)}</b><span>${popis[s.stav] || ''}</span></button>`).join('') : '';
+    let potvrdit = '';
+    if (S.vyber) {
+      const s = den.sloty.find(x => x.t === S.vyber);
+      potvrdit = `<div class="ramec" style="margin-top:12px">
+        ${S.presun ? '' : (D.mista.length > 1 ? `<label class="pole">Kde vás vyzvedne instruktor?<select id="misto">${D.mista.map(m => `<option ${m === S.misto ? 'selected' : ''}>${H(m)}</option>`).join('')}</select></label>` : `<p class="mala mute" style="margin:0">Vyzvednutí: ${H(D.mista[0])}</p>`)}
+        <button class="btn hl velke" data-akce="zapsat">${S.presun ? 'Přesunout na' : 'Zapsat jízdu'} ${H(den.nazev)} v ${H(s.cas)}</button>
+      </div>`;
+    }
+    pridat = D.dny.length ? `<div class="dny" role="group" aria-label="Den">${dny}</div>
+      <div class="sloty" role="group" aria-label="Čas jízdy">${sloty}</div>${potvrdit}` : '<p class="mala mute">Teď nejsou vypsané žádné časy.</p>';
+  }
+  el.innerHTML = `
+    ${S.msg ? `<p class="zprava ${S.msg.pozor ? 'pozor' : ''}" role="status">${H(S.msg.t)}</p>` : ''}
+    <div class="blok"><div class="mala">Odjeto ${D.odjeto} z ${D.celkem} jízd</div><div class="pruh"><i style="width:${Math.min(100, D.odjeto / D.celkem * 100)}%"></i></div></div>
+    <div class="blok"><h3>Vaše jízdy</h3>${moje}</div>
+    <div class="blok"><h3>${S.presun ? 'Nový čas jízdy' : 'Přidat jízdu'}</h3>${pridat}</div>
+    <p class="mala mute">Den před jízdou kolem ${D.hodina}:00 vám přijde připomínka e-mailem. Instruktor: ${H(D.instruktor)}${D.telefon ? `, <a href="tel:${H(D.telefon.replace(/\s/g, ''))}">${H(D.telefon)}</a>` : ''}.</p>`;
+  const vyb = el.querySelector('.dny [aria-pressed=true]');
+  if (vyb) vyb.scrollIntoView({ block: 'nearest', inline: 'center' });
+}
+
+document.addEventListener('change', e => { if (e.target.id === 'misto') S.misto = e.target.value; });
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-akce]'); if (!b || b.disabled || zaneprazdneno) return;
+  const a = b.dataset.akce;
+  if (a !== 'zapsat' && a !== 'zrusit-ano') S.msg = null;
+  switch (a) {
+    case 'den': S.den = +b.dataset.i; S.vyber = null; break;
+    case 'slot': S.vyber = b.dataset.t; break;
+    case 'presun': S.presun = S.presun === b.dataset.id ? null : b.dataset.id; S.vyber = null; S.rusit = null; break;
+    case 'zrusit': S.rusit = b.dataset.id; break;
+    case 'zrusit-ne': S.rusit = null; break;
+    case 'zrusit-ano': {
+      const id = b.dataset.id; if (S.presun === id) S.presun = null;
+      volej('zakZrusit', TOKEN, id).then(nacti, chyba); return;
+    }
+    case 'zapsat': {
+      const presun = S.presun; S.presun = null;
+      volej('zakZapsat', TOKEN, S.vyber, S.misto, presun || '').then(nacti, e => { S.presun = presun; chyba(e); });
+      return;
+    }
+  }
+  vykresli();
+});
+volej('zakData', TOKEN).then(nacti, e => { document.getElementById('obsah').innerHTML = `<p class="zprava pozor">${H(chybaText(e))}</p>`; });
+</script>
+</body>
+</html>
