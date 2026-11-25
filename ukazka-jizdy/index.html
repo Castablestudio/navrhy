@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Ukázka: kalendář jízd pro autoškolu</title>
+<style>
+/* Ukázka pro autoškoly (vlna 27, mail „Zápis jízd pro vaše žáky“).
+   Tři okna vedle sebe: telefon žáka, telefon instruktora, zprávy, které systém pošle sám.
+   Smyšlená autoškola a žáci. Nikde slovo web: autoškoly nevědí, že děláme weby (Pepa 25. 11. 14:50). */
+:root{--bg:#eef1f4;--card:#fff;--ink:#14202e;--mute:#5b6878;--line:#dce2e9;--accent:#1d4e89;--accent-soft:#e4edf8;--ok:#e5f3e9;--ok-ink:#1d6a36;--red:#b3261e;--red-soft:#fbeae8;--zav:#f0f1f3;--nova:#fff4d6}
+html{color-scheme:light}
+*{box-sizing:border-box;min-width:0}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid #7fa6d6;outline-offset:2px}
+.lista{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:12px max(3vw,14px);display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center}
+.lista h1{margin:0;font-size:18px;font-weight:600;line-height:1.25}
+.lista h1 small{display:block;font-size:13px;font-weight:400;color:var(--mute)}
+.cas{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-left:auto}
+.cas .ted{font-weight:600;font-variant-numeric:tabular-nums;margin-right:4px}
+.btn{min-height:44px;padding:0 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-size:15px}
+.btn:hover{border-color:var(--accent)}
+.btn.hl{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.cerv{color:var(--red);border-color:#e7c3bf}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.navod{max-width:1400px;margin:14px auto 0;padding:0 max(3vw,14px);color:var(--mute);font-size:14px}
+.navod ol{margin:4px 0 0;padding-left:20px}
+.taby{display:none;gap:6px;padding:12px max(3vw,14px) 0}
+.taby button{flex:1;min-height:44px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-weight:500;font-size:15px}
+.taby button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.taby .pocet{display:inline-block;min-width:20px;padding:0 6px;margin-left:4px;border-radius:10px;background:#f2b705;color:#14202e;font-size:12px;font-weight:600}
+.stul{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;padding:16px max(3vw,14px) 48px;max-width:1400px;margin:0 auto;align-items:start}
+.panel>h2{font-size:15px;font-weight:600;margin:0 0 10px;text-align:center}
+.panel>h2 span{display:block;font-weight:400;color:var(--mute);font-size:13px}
+.telefon{margin:0 auto;max-width:380px;border:10px solid #17202b;border-radius:36px;background:#fff;height:700px;overflow:auto;box-shadow:0 14px 40px rgba(20,32,46,.18);scrollbar-width:thin;position:relative}
+.hlava{position:sticky;top:0;z-index:2}
+.app-h{background:var(--accent);color:#fff;padding:14px 16px 12px}
+.app-h b{display:block;font-size:17px;font-weight:600;line-height:1.25}
+.app-h span{font-size:13px;opacity:.88}
+.obsah{padding:14px 14px 24px}
+.blok{margin-bottom:20px}
+.blok>h3{font-size:15px;font-weight:600;margin:0 0 8px}
+.pruh{height:8px;border-radius:4px;background:var(--accent-soft);overflow:hidden;margin:6px 0 2px}
+.pruh i{display:block;height:100%;background:var(--accent);border-radius:4px}
+.mala{font-size:13px}.mute{color:var(--mute)}
+.zprava{border-radius:12px;padding:10px 12px;margin:0 0 12px;font-size:14px;background:var(--ok);color:var(--ok-ink)}
+.zprava.pozor{background:var(--red-soft);color:var(--red)}
+.moje{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.moje li{border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.moje .kdy{font-weight:600;font-variant-numeric:tabular-nums}
+.moje .akce{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.moje .akce .btn{min-height:40px;padding:0 12px;font-size:14px}
+.dny{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.dny button{flex:0 0 auto;min-width:62px;min-height:54px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:13px;line-height:1.2;padding:4px 8px}
+.dny button b{display:block;font-size:15px;font-weight:600}
+.dny button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+.sloty{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.sloty button{min-height:56px;border-radius:12px;border:1px solid var(--line);background:#fff;text-align:left;padding:6px 12px;line-height:1.2}
+.sloty button b{display:block;font-size:16px;font-variant-numeric:tabular-nums}
+.sloty button span{font-size:12px;color:var(--mute)}
+.sloty button.volno{border-color:#b9d3bf;background:var(--ok)}
+.sloty button.volno span{color:var(--ok-ink);font-weight:500}
+.sloty button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+.sloty button[aria-pressed=true] span{color:#fff}
+.sloty button[disabled]{cursor:default;background:var(--zav);color:#9aa3ad}
+.potvrdit{margin-top:12px;border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:10px}
+.potvrdit label{display:grid;gap:4px;font-size:14px;font-weight:500}
+select,input[type=text]{width:100%;min-height:46px;padding:8px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:16px}
+.velke{width:100%;min-height:50px;font-size:16px}
+.itaby{display:flex;gap:4px;padding:8px 10px;background:#fff;border-bottom:1px solid var(--line)}
+.itaby button{flex:1;min-height:40px;border:0;border-radius:10px;background:none;font-size:14px;font-weight:500}
+.itaby button[aria-pressed=true]{background:var(--accent-soft);color:var(--accent)}
+.den-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:4px 0 8px}
+.den-h h3{margin:0;font-size:16px;font-weight:600}
+.radky{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.radky li+li{border-top:1px solid var(--line)}
+.radek{display:grid;grid-template-columns:50px minmax(0,1fr) auto;gap:10px;align-items:center;width:100%;text-align:left;background:#fff;border:0;padding:10px 12px;min-height:58px}
+.radek:hover{background:#f7f9fb}
+.radek .c{font-weight:600;font-variant-numeric:tabular-nums}
+.radek b{display:block;font-weight:600}
+.radek .s{display:block;font-size:13px;color:var(--mute)}
+.radek.volno .s{color:var(--ok-ink)}
+.radek.zav{background:var(--zav)}
+.radek.minula{opacity:.62}
+.stitek{font-size:11px;font-weight:600;border-radius:8px;padding:2px 7px;white-space:nowrap}
+.stitek.nova{background:var(--nova);color:#7a5600}
+.stitek.pres{background:var(--accent-soft);color:var(--accent)}
+.stitek.ok{background:var(--ok);color:var(--ok-ink)}
+.stitek.ne{background:var(--red-soft);color:var(--red)}
+.detail{border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px}
+.detail h3{margin:0;font-size:17px}
+.detail dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:0;font-size:14px}
+.detail dt{color:var(--mute)}.detail dd{margin:0}
+.zpet{background:none;border:0;min-height:40px;padding:0;font-weight:600;color:var(--accent);text-align:left}
+.tyden{display:grid;gap:8px}
+.tyden button{display:flex;justify-content:space-between;gap:10px;align-items:center;width:100%;min-height:54px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:8px 12px;text-align:left}
+.zaci{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.zaci li{border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.zaci .jm{display:flex;justify-content:space-between;gap:8px;font-weight:600}
+.zaci .btn{min-height:40px;padding:0 12px;font-size:14px;margin-top:8px}
+.posta{max-width:420px;margin:0 auto;display:grid;gap:10px}
+.mail{background:var(--card);border-radius:16px;padding:12px 14px;box-shadow:0 1px 8px rgba(20,32,46,.06);border:1px solid transparent}
+.mail.nova{border-color:#f2c94c;background:#fffdf5}
+.mail .hl{font-size:12px;color:var(--mute);display:flex;flex-wrap:wrap;gap:4px 10px}
+.mail .hl b{color:var(--ink);font-weight:600}
+.mail .pr{font-weight:600;margin:4px 0 2px}
+.mail p{margin:0;font-size:14px;white-space:pre-line}
+.prazdno{color:var(--mute);font-size:14px;text-align:center;padding:24px 10px;background:var(--card);border-radius:16px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:1100px){
+  .taby{display:flex}
+  .stul{grid-template-columns:minmax(0,1fr)}
+  .stul>.panel{display:none}
+  .stul>.panel.vid{display:block}
+  .panel>h2{display:none}
+  .telefon{height:auto;min-height:70vh;border:1px solid var(--line);border-radius:20px;box-shadow:0 4px 18px rgba(20,32,46,.08)}
+}
+@media (prefers-reduced-motion:no-preference){.mail.nova{animation:svit .9s ease-out}@keyframes svit{from{transform:translateY(-4px);opacity:.3}}}
+</style>
+</head>
+<body>
+<header class="lista">
+  <h1>Kalendář jízd pro autoškolu<small>Ukázka se smyšlenou autoškolou a žáky</small></h1>
+  <div class="cas" aria-label="Čas v ukázce">
+    <span class="ted" id="ted"></span>
+    <button class="btn" data-akce="cas-2h">+2 hodiny</button>
+    <button class="btn" data-akce="cas-18" id="b18">Na 18:00</button>
+    <button class="btn" data-akce="cas-rano">Další den ráno</button>
+  </div>
+</header>
+<div class="navod">
+  Zkuste si to:
+  <ol>
+    <li>Za žákyni Lucii zapište jízdu nebo ji přesuňte.</li>
+    <li>Podívejte se do telefonu instruktora: jízda tam je hned.</li>
+    <li>Posuňte čas na 18:00 a uvidíte připomínky, které odejdou samy.</li>
+  </ol>
+</div>
+<nav class="taby" aria-label="Okna ukázky">
+  <button data-okno="zak" aria-pressed="true">Žák</button>
+  <button data-okno="instr" aria-pressed="false">Instruktor</button>
+  <button data-okno="posta" aria-pressed="false">Zprávy<span class="pocet" id="pocet" hidden></span></button>
+</nav>
+<main class="stul">
+  <section class="panel vid" id="p-zak">
+    <h2>Telefon žáka<span>Lucie si jízdu zapíše sama</span></h2>
+    <div class="telefon" id="zak"></div>
+  </section>
+  <section class="panel" id="p-instr">
+    <h2>Telefon instruktora<span>Vidí, koho má a v kolik</span></h2>
+    <div class="telefon" id="instr"></div>
+  </section>
+  <section class="panel" id="p-posta">
+    <h2>Zprávy, které odejdou samy<span>Potvrzení, připomínka den předem, souhrn na zítřek</span></h2>
+    <div class="posta" id="posta"></div>
+  </section>
+</main>
+<div class="sr" aria-live="polite" id="hlas"></div>
+<script>
+'use strict';
+const DNY=['ne','po','út','st','čt','pá','so'];
+const DNY_D=['neděle','pondělí','úterý','středa','čtvrtek','pátek','sobota'];
+const SLOTY=['07:00','08:45','10:30','13:00','14:45','16:30'];
+const DELKA=90, CELKEM=28, ZMENA_H=24, MAX_PLAN=3, PREDEM_H=2;
+const MISTA=['U autoškoly','Nádraží','Gymnázium','Sídliště Jih'];
+const INSTR='Petr';
+const ZACI=[
+  {id:'lucie',jm:'Lucie Dvořáková',zaklad:7},
+  {id:'jana',jm:'Jana Malá',zaklad:11},
+  {id:'tomas',jm:'Tomáš Beneš',zaklad:2},
+  {id:'klara',jm:'Klára Svobodová',zaklad:24},
+  {id:'marek',jm:'Marek Horák',zaklad:15},
+  {id:'eva',jm:'Eva Kučerová',zaklad:5},
+  {id:'ondra',jm:'Ondřej Pokorný',zaklad:19},
+  {id:'adela',jm:'Adéla Říhová',zaklad:9}
+];
+const H=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const d0=d=>{const x=new Date(d);x.setHours(0,0,0,0);return x};
+const plusDny=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const pracovni=d=>d.getDay()>0&&d.getDay()<6;
+const vSlot=(den,s)=>{const[h,m]=s.split(':').map(Number);const x=d0(den);x.setHours(h,m,0,0);return x};
+const fDen=d=>DNY[d.getDay()]+' '+d.getDate()+'. '+(d.getMonth()+1)+'.';
+const fCas=d=>d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');
+const stejny=(a,b)=>d0(a).getTime()===d0(b).getTime();
+const zak=id=>ZACI.find(z=>z.id===id);
+const krestni=id=>zak(id).jm.split(' ')[0];
+
+// --- stav ukázky
+let ted=new Date();ted.setHours(9,0,0,0);
+while(!pracovni(ted)){ted=plusDny(ted,1);ted.setHours(9,0,0,0)}
+const DNES0=d0(ted);
+const PRAC=[];for(let i=0;PRAC.length<9;i++){const d=plusDny(DNES0,i);if(pracovni(d))PRAC.push(d)}
+let jizdy=[], zavreno=[], zpravy=[], idN=1;
+const S={okno:'zak',zDen:1,zVyber:null,zMisto:MISTA[0],zPresun:null,zMsg:null,iTab:'den',iDen:0,iDetail:null,iMsg:null};
+
+// smyšlené jízdy ostatních žáků (pevné „náhodné“ číslo, ať ukázka vypadá pokaždé stejně)
+let semeno=7;const nah=()=>((semeno=(semeno*1103515245+12345)%2147483648)/2147483648);
+const ostatni=['jana','marek','klara','eva','ondra'];
+PRAC.slice(0,7).forEach((den,di)=>{
+  if(di===4){['13:00','14:45','16:30'].forEach(s=>zavreno.push({start:vSlot(den,s),duvod:'Zkoušky na úřadě'}))}
+  SLOTY.forEach(s=>{
+    const start=vSlot(den,s);
+    if(zavreno.some(z=>z.start.getTime()===start.getTime()))return;
+    if(di===2&&s==='14:45')return; // pro Lucii
+    if(nah()>(di<2?0.72:0.52))return;
+    const kdo=ostatni.filter(id=>jizdy.filter(j=>j.zak===id&&j.stav!=='zrusena'&&j.start>=ted).length<MAX_PLAN);
+    if(!kdo.length)return;
+    const id=kdo[Math.floor(nah()*kdo.length)];
+    jizdy.push({id:idN++,zak:id,start,misto:MISTA[Math.floor(nah()*MISTA.length)],stav:start<ted?'probehla':'plan'});
+  });
+});
+jizdy.push({id:idN++,zak:'lucie',start:vSlot(PRAC[2],'14:45'),misto:'U autoškoly',stav:'plan'});
+
+// --- výpočty
+const odjeto=id=>zak(id).zaklad+jizdy.filter(j=>j.zak===id&&j.stav==='probehla').length;
+const planovane=id=>jizdy.filter(j=>j.zak===id&&j.stav==='plan').sort((a,b)=>a.start-b.start);
+function cislo(j){
+  if(j.stav==='probehla')return zak(j.zak).zaklad+jizdy.filter(x=>x.zak===j.zak&&x.stav==='probehla'&&x.start<=j.start).length;
+  return odjeto(j.zak)+planovane(j.zak).filter(x=>x.start<j.start).length+1;
+}
+const jizdaV=start=>jizdy.find(j=>j.stav!=='zrusena'&&j.start.getTime()===start.getTime());
+const zavrenoV=start=>zavreno.find(z=>z.start.getTime()===start.getTime());
+const hodinDo=d=>(d-ted)/36e5;
+
+function posli(komu,predmet,text){zpravy.unshift({cas:new Date(ted),komu,predmet,text,nova:true,neprect:true})}
+const probehle=kdy=>jizdy.forEach(j=>{if(j.stav==='plan'&&j.start.getTime()+DELKA*6e4<=kdy.getTime())j.stav='probehla'});
+
+// --- čas
+function posunNa(novy){
+  for(let d=d0(ted);d<=novy;d=plusDny(d,1)){
+    const t18=new Date(d);t18.setHours(18,0,0,0);
+    if(t18>ted&&t18<=novy){
+      probehle(t18);
+      const zitra=plusDny(d,1);
+      const zj=jizdy.filter(j=>j.stav==='plan'&&stejny(j.start,zitra)).sort((a,b)=>a.start-b.start);
+      const uloz=ted;ted=t18;
+      zj.forEach(j=>posli(zak(j.zak).jm,'Zítra máte jízdu v '+fCas(j.start),
+        'Dobrý den,\nzítra ('+fDen(j.start)+') máte jízdu v '+fCas(j.start)+'. Instruktor '+INSTR+' vás vyzvedne: '+j.misto+'.\nKdyž nemůžete, dejte instruktorovi vědět.'));
+      if(zj.length)posli('Instruktor '+INSTR,'Zítra: '+zj.length+' '+(zj.length===1?'jízda':zj.length<5?'jízdy':'jízd'),
+        zj.map(j=>fCas(j.start)+'  '+zak(j.zak).jm+' ('+cislo(j)+'. jízda), '+j.misto).join('\n'));
+      ted=uloz;
+    }
+  }
+  ted=novy;
+  probehle(ted);
+  const dnes=PRAC.findIndex(d=>d0(d)>=d0(ted));
+  if(dnes>=0){if(S.iDen<dnes)S.iDen=dnes;if(S.zDen<dnes)S.zDen=dnes}
+  S.zVyber=null;S.zMsg=null;S.iMsg=null;
+}
+function dalsiRano(){let d=plusDny(d0(ted),1);while(!pracovni(d))d=plusDny(d,1);d.setHours(7,0,0,0);return d}
+
+// --- žák (Lucie)
+function vykresliZaka(){
+  const L=zak('lucie'),od=odjeto('lucie'),pl=planovane('lucie');
+  const dnyB=PRAC.map((d,i)=>{
+    const pryc=d0(d)<d0(ted);
+    return pryc?'':`<button data-akce="z-den" data-i="${i}" aria-pressed="${S.zDen===i}">${stejny(d,ted)?'dnes':DNY[d.getDay()]}<b>${d.getDate()}. ${d.getMonth()+1}.</b></button>`;
+  }).join('');
+  const den=PRAC[S.zDen];
+  const sloty=SLOTY.map(s=>{
+    const st=vSlot(den,s),j=jizdaV(st),z=zavrenoV(st);
+    let tr='',pop='volno',dis=false;
+    if(z){dis=true;pop='nejezdí se'}
+    else if(j){dis=true;pop=j.zak==='lucie'?'vaše jízda':'obsazeno'}
+    else if(hodinDo(st)<PREDEM_H){dis=true;pop=st<ted?'už proběhlo':'už jen telefonicky'}
+    else tr='volno';
+    const sel=S.zVyber===st.getTime();
+    return `<button class="${tr}" data-akce="z-slot" data-t="${st.getTime()}" ${dis?'disabled':''} aria-pressed="${sel}"><b>${s}</b><span>${pop}</span></button>`;
+  }).join('');
+  let potvrdit='';
+  if(S.zVyber){
+    const st=new Date(S.zVyber);
+    const presun=S.zPresun?jizdy.find(j=>j.id===S.zPresun):null;
+    potvrdit=`<div class="potvrdit">
+      ${presun?'':`<label>Kde vás vyzvedne instruktor?<select data-akce="z-misto">${MISTA.map(m=>`<option ${m===S.zMisto?'selected':''}>${H(m)}</option>`).join('')}</select></label>`}
+      <button class="btn hl velke" data-akce="z-zapsat">${presun?'Přesunout na':'Zapsat jízdu'} ${fDen(st)} v ${fCas(st)}</button>
+    </div>`;
+  }
+  const moje=pl.length?`<ul class="moje">${pl.map(j=>{
+    const lzeMenit=hodinDo(j.start)>=ZMENA_H;
+    return `<li><div class="kdy">${DNY_D[j.start.getDay()]} ${j.start.getDate()}. ${j.start.getMonth()+1}. v ${fCas(j.start)}</div>
+      <div class="mala mute">${cislo(j)}. jízda · vyzvednutí: ${H(j.misto)}</div>
+      ${lzeMenit?`<div class="akce"><button class="btn" data-akce="z-presun" data-id="${j.id}">${S.zPresun===j.id?'Vyberte nový čas níž':'Přesunout'}</button><button class="btn cerv" data-akce="z-zrusit" data-id="${j.id}">Zrušit</button></div>`
+      :`<div class="mala mute" style="margin-top:6px">Méně než ${ZMENA_H} hodin předem se jízda mění jen po domluvě s instruktorem.</div>`}
+    </li>`}).join('')}</ul>`:`<p class="mala mute" style="margin:0">Teď nemáte zapsanou žádnou jízdu.</p>`;
+  const plno=pl.length>=MAX_PLAN&&!S.zPresun;
+  document.getElementById('zak').innerHTML=`
+  <div class="hlava"><div class="app-h"><b>Autoškola Ukázková</b><span>${H(L.jm)}</span></div></div>
+  <div class="obsah">
+    ${S.zMsg?`<p class="zprava ${S.zMsg.pozor?'pozor':''}" role="status">${H(S.zMsg.t)}</p>`:''}
+    <div class="blok"><div class="mala">Odjeto ${od} z ${CELKEM} jízd</div><div class="pruh"><i style="width:${Math.min(100,od/CELKEM*100)}%"></i></div></div>
+    <div class="blok"><h3>Vaše jízdy</h3>${moje}</div>
+    <div class="blok"><h3>${S.zPresun?'Nový čas jízdy':'Přidat jízdu'}</h3>
+      ${plno?`<p class="mala mute" style="margin:0">Najednou můžete mít zapsané ${MAX_PLAN} jízdy. Další si přidáte po té nejbližší.</p>`:
+      `<div class="dny" role="group" aria-label="Den">${dnyB}</div>
+      <div class="sloty" role="group" aria-label="Čas jízdy">${sloty}</div>
+      ${potvrdit}`}
+    </div>
+    <p class="mala mute">Den před jízdou vám v 18:00 přijde připomínka.</p>
+  </div>`;
+}
+
+// --- instruktor
+function radekSlotu(den,s){
+  const st=vSlot(den,s),j=jizdaV(st),z=zavrenoV(st),minula=st.getTime()+DELKA*6e4<=ted.getTime();
+  const zrus=jizdy.filter(x=>x.stav==='zrusena'&&x.start.getTime()===st.getTime());
+  if(j){
+    let st2='';
+    if(j.stav==='neprisel')st2='<span class="stitek ne">nepřišel</span>';
+    else if(j.stav==='probehla')st2='<span class="stitek ok">proběhla</span>';
+    else if(j.nova)st2='<span class="stitek nova">nová</span>';
+    else if(j.presunuta)st2='<span class="stitek pres">přesunutá</span>';
+    return `<li><button class="radek ${minula?'minula':''}" data-akce="i-jizda" data-id="${j.id}"><span class="c">${s}</span><span><b>${H(zak(j.zak).jm)}</b><span class="s">${j.stav==='neprisel'?'':cislo(j)+'. jízda · '}${H(j.misto)}</span></span>${st2}</button></li>`;
+  }
+  if(z)return `<li><button class="radek zav" data-akce="i-volno" data-t="${st.getTime()}"><span class="c">${s}</span><span><b>Zavřeno</b><span class="s">${H(z.duvod)}</span></span></button></li>`;
+  const pozn=zrus.length?' · zrušil(a) '+H(zak(zrus[zrus.length-1].zak).jm):'';
+  return `<li><button class="radek volno ${minula?'minula':''}" data-akce="i-volno" data-t="${st.getTime()}"><span class="c">${s}</span><span><b>${minula?'—':'Volno'}</b><span class="s">${minula?'':'žáci si ho mohou zapsat'}${pozn}</span></span></button></li>`;
+}
+function vykresliInstr(){
+  const tabs=[['den','Den'],['tyden','Týden'],['zaci','Žáci']].map(([k,t])=>`<button data-akce="i-tab" data-k="${k}" aria-pressed="${S.iTab===k}">${t}</button>`).join('');
+  let obsah='';
+  if(S.iDetail){obsah=detailInstr()}
+  else if(S.iTab==='den'){
+    const den=PRAC[S.iDen];
+    const pocet=jizdy.filter(j=>j.stav!=='zrusena'&&stejny(j.start,den)).length;
+    const dnyB=PRAC.map((d,i)=>d0(d)<d0(ted)?'':`<button data-akce="i-den" data-i="${i}" aria-pressed="${S.iDen===i}">${stejny(d,ted)?'dnes':DNY[d.getDay()]}<b>${d.getDate()}. ${d.getMonth()+1}.</b></button>`).join('');
+    const vse=SLOTY.every(s=>zavrenoV(vSlot(den,s)));
+    obsah=`<div class="dny" role="group" aria-label="Den">${dnyB}</div>
+      <div class="den-h" style="margin-top:10px"><h3>${DNY_D[den.getDay()]} ${den.getDate()}. ${den.getMonth()+1}.</h3><span class="mala mute">${pocet} ${pocet===1?'jízda':pocet>1&&pocet<5?'jízdy':'jízd'}</span></div>
+      <ul class="radky">${SLOTY.map(s=>radekSlotu(den,s)).join('')}</ul>
+      ${d0(den)>d0(ted)&&!vse?`<button class="btn cerv" style="margin-top:12px;width:100%" data-akce="i-zavrit-den">Celý den nejezdím (nemoc, dovolená)</button>`:''}`;
+  }
+  else if(S.iTab==='tyden'){
+    obsah=`<div class="tyden">${PRAC.filter(d=>d0(d)>=d0(ted)).map(d=>{
+      const i=PRAC.indexOf(d);
+      const n=jizdy.filter(j=>j.stav!=='zrusena'&&j.stav!=='neprisel'&&stejny(j.start,d)).length;
+      const v=SLOTY.filter(s=>{const st=vSlot(d,s);return !jizdaV(st)&&!zavrenoV(st)&&st>ted}).length;
+      return `<button data-akce="i-den-z-tydne" data-i="${i}"><span><b>${DNY_D[d.getDay()]} ${d.getDate()}. ${d.getMonth()+1}.</b></span><span class="mala mute">${n} ${n===1?'jízda':n>1&&n<5?'jízdy':'jízd'} · ${v} volno</span></button>`;
+    }).join('')}</div>`;
+  }
+  else{
+    const zaci=ZACI.slice().sort((a,b)=>planovane(a.id).length-planovane(b.id).length||a.jm.localeCompare(b.jm,'cs'));
+    obsah=`<p class="mala mute" style="margin:0 0 10px">Kolik má kdo odjeto, počítá kalendář sám.</p><ul class="zaci">${zaci.map(z=>{
+      const od=odjeto(z.id),p=planovane(z.id)[0];
+      return `<li><div class="jm"><span>${H(z.jm)}</span><span class="mala mute">${od} z ${CELKEM}</span></div>
+        <div class="pruh"><i style="width:${Math.min(100,od/CELKEM*100)}%"></i></div>
+        <div class="mala ${p?'mute':''}" style="${p?'':'color:var(--red);font-weight:500'}">${p?'Další jízda: '+fDen(p.start)+' v '+fCas(p.start):'Nemá zapsanou další jízdu'}</div>
+        ${p?'':(z.pripomenuto?`<div class="mala mute" style="margin-top:6px">Připomínka odešla ${fDen(z.pripomenuto)} v ${fCas(z.pripomenuto)}.</div>`:`<button class="btn" data-akce="i-pripomenout" data-id="${z.id}">Poslat připomínku, ať si zapíše jízdu</button>`)}
+      </li>`}).join('')}</ul>`;
+  }
+  document.getElementById('instr').innerHTML=`
+  <div class="hlava"><div class="app-h"><b>Autoškola Ukázková</b><span>Instruktor ${INSTR}</span></div>
+  <div class="itaby" role="group" aria-label="Pohled">${tabs}</div></div>
+  <div class="obsah">${S.iMsg?`<p class="zprava ${S.iMsg.pozor?'pozor':''}" role="status">${H(S.iMsg.t)}</p>`:''}${obsah}</div>`;
+}
+function detailInstr(){
+  const D=S.iDetail;
+  if(D.typ==='jizda'){
+    const j=jizdy.find(x=>x.id===D.id),z=zak(j.zak),minula=j.start.getTime()+DELKA*6e4<=ted.getTime();
+    return `<button class="zpet" data-akce="i-zpet">‹ Zpět</button><div class="detail">
+      <h3>${H(z.jm)}</h3>
+      <dl><dt>Kdy</dt><dd>${DNY_D[j.start.getDay()]} ${j.start.getDate()}. ${j.start.getMonth()+1}. v ${fCas(j.start)}</dd>
+      <dt>Jízda</dt><dd>${j.stav==='neprisel'?'nepřišel(a)':cislo(j)+'. z '+CELKEM}</dd>
+      <dt>Vyzvednutí</dt><dd>${H(j.misto)}</dd>
+      <dt>Odjeto</dt><dd>${odjeto(j.zak)} z ${CELKEM}</dd></dl>
+      ${minula?(j.stav==='neprisel'?`<button class="btn" data-akce="i-prisel" data-id="${j.id}">Přece jen přišel(a)</button>`:`<button class="btn cerv" data-akce="i-neprisel" data-id="${j.id}">Nepřišel(a)</button><p class="mala mute" style="margin:0">Proběhlá jízda se započítá sama.</p>`)
+      :`<label class="mala" style="display:grid;gap:4px;font-weight:500">Důvod pro žáka<input type="text" id="duvod" value="Auto je v servisu"></label><button class="btn cerv" data-akce="i-zrusit" data-id="${j.id}">Zrušit jízdu a dát žákovi vědět</button>`}
+    </div>`;
+  }
+  const st=new Date(D.t),z=zavrenoV(st),minula=st<ted;
+  return `<button class="zpet" data-akce="i-zpet">‹ Zpět</button><div class="detail">
+    <h3>${DNY_D[st.getDay()]} ${st.getDate()}. ${st.getMonth()+1}. v ${fCas(st)}</h3>
+    ${minula?'<p class="mala mute" style="margin:0">Tenhle čas už je pryč.</p>':z?`<p class="mala" style="margin:0">Zavřeno: ${H(z.duvod)}</p><button class="btn hl" data-akce="i-otevrit" data-t="${D.t}">Otevřít pro žáky</button>`
+    :`<p class="mala mute" style="margin:0">Volný čas. Žáci si ho mohou zapsat.</p><label class="mala" style="display:grid;gap:4px;font-weight:500">Proč nejezdíte<input type="text" id="duvod" value="Volno"></label><button class="btn" data-akce="i-zavrit" data-t="${D.t}">Zavřít tento čas</button>`}
+  </div>`;
+}
+
+// --- zprávy
+function vykresliPostu(){
+  const el=document.getElementById('posta');
+  el.innerHTML=zpravy.length?zpravy.map(m=>`<article class="mail ${m.nova?'nova':''}"><div class="hl"><b>${H(m.komu)}</b><span>${fDen(m.cas)} ${fCas(m.cas)}</span></div><div class="pr">${H(m.predmet)}</div><p>${H(m.text)}</p></article>`).join('')
+    :`<p class="prazdno">Zatím nic. Zapište jízdu nebo posuňte čas na 18:00.</p>`;
+  if(S.okno==='posta')zpravy.forEach(m=>m.neprect=false);
+  const nove=zpravy.filter(m=>m.neprect).length,p=document.getElementById('pocet');
+  p.hidden=!nove;p.textContent=nove;
+}
+
+function vykresli(){
+  document.getElementById('ted').textContent='Teď: '+DNY_D[ted.getDay()]+' '+ted.getDate()+'. '+(ted.getMonth()+1)+'. '+fCas(ted);
+  const b18=document.getElementById('b18');b18.disabled=ted.getHours()>=18;
+  vykresliZaka();vykresliInstr();vykresliPostu();
+}
+const hlas=t=>{document.getElementById('hlas').textContent=t};
+
+document.addEventListener('change',e=>{if(e.target.dataset.akce==='z-misto')S.zMisto=e.target.value});
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-akce],[data-okno]');if(!b||b.disabled)return;
+  if(b.dataset.okno){
+    S.okno=b.dataset.okno;
+    document.querySelectorAll('[data-okno]').forEach(x=>x.setAttribute('aria-pressed',x===b));
+    document.querySelectorAll('.stul>.panel').forEach(p=>p.classList.toggle('vid',p.id==='p-'+S.okno));
+    vykresli();return;
+  }
+  const a=b.dataset.akce;
+  if(a==='z-misto')return;
+  zpravy.forEach(m=>m.nova=false);
+  switch(a){
+    case 'cas-2h':{const n=new Date(ted);n.setHours(n.getHours()+2);posunNa(n);hlas('Čas posunut o 2 hodiny');break}
+    case 'cas-18':{const n=new Date(ted);n.setHours(18,0,0,0);posunNa(n);hlas('Je 18:00, připomínky odešly');break}
+    case 'cas-rano':{posunNa(dalsiRano());hlas('Další den ráno');break}
+    case 'z-den':S.zDen=+b.dataset.i;S.zVyber=null;S.zMsg=null;break;
+    case 'z-slot':S.zVyber=+b.dataset.t;S.zMsg=null;break;
+    case 'z-presun':S.zPresun=S.zPresun===+b.dataset.id?null:+b.dataset.id;S.zVyber=null;S.zMsg=null;break;
+    case 'z-zrusit':{
+      const j=jizdy.find(x=>x.id===+b.dataset.id);j.stav='zrusena';if(S.zPresun===j.id)S.zPresun=null;
+      posli(zak('lucie').jm,'Jízda zrušena','Dobrý den,\njízda '+fDen(j.start)+' v '+fCas(j.start)+' je zrušená. Čas se uvolnil pro ostatní.');
+      S.zMsg={t:'Jízda '+fDen(j.start)+' v '+fCas(j.start)+' je zrušená.'};hlas(S.zMsg.t);break}
+    case 'z-zapsat':{
+      const st=new Date(S.zVyber);
+      if(jizdaV(st)||zavrenoV(st)){S.zMsg={t:'Tento čas si mezitím vzal někdo jiný.',pozor:true};S.zVyber=null;break}
+      if(S.zPresun){
+        const j=jizdy.find(x=>x.id===S.zPresun),stary=j.start;j.start=st;j.presunuta=true;j.nova=false;S.zPresun=null;
+        posli(zak('lucie').jm,'Jízda přesunuta na '+fDen(st)+' v '+fCas(st),'Dobrý den,\njízdu z '+fDen(stary)+' '+fCas(stary)+' jsme přesunuli na '+fDen(st)+' v '+fCas(st)+'. Vyzvednutí: '+j.misto+'.');
+        S.zMsg={t:'Přesunuto na '+fDen(st)+' v '+fCas(st)+'. Instruktor to vidí.'};
+      }else{
+        jizdy.push({id:idN++,zak:'lucie',start:st,misto:S.zMisto,stav:'plan',nova:true});
+        posli(zak('lucie').jm,'Jízda zapsána: '+fDen(st)+' v '+fCas(st),'Dobrý den,\nmáte zapsanou jízdu '+fDen(st)+' v '+fCas(st)+'. Vyzvednutí: '+S.zMisto+'.\nDen předem v 18:00 vám přijde připomínka.');
+        S.zMsg={t:'Zapsáno na '+fDen(st)+' v '+fCas(st)+'. Instruktor to vidí.'};
+        const i=PRAC.findIndex(d=>stejny(d,st));if(i>=0){S.iDen=i;S.iTab='den';S.iDetail=null}
+      }
+      S.zVyber=null;hlas(S.zMsg.t);break}
+    case 'i-tab':S.iTab=b.dataset.k;S.iDetail=null;S.iMsg=null;break;
+    case 'i-den':S.iDen=+b.dataset.i;S.iDetail=null;S.iMsg=null;break;
+    case 'i-den-z-tydne':S.iDen=+b.dataset.i;S.iTab='den';S.iDetail=null;S.iMsg=null;break;
+    case 'i-zpet':S.iDetail=null;break;
+    case 'i-jizda':{const j=jizdy.find(x=>x.id===+b.dataset.id);j.nova=false;S.iDetail={typ:'jizda',id:j.id};S.iMsg=null;break}
+    case 'i-volno':S.iDetail={typ:'slot',t:+b.dataset.t};S.iMsg=null;break;
+    case 'i-zrusit':{
+      const j=jizdy.find(x=>x.id===+b.dataset.id),duv=(document.getElementById('duvod')||{}).value||'';
+      j.stav='zrusena';
+      posli(zak(j.zak).jm,'Jízda '+fDen(j.start)+' v '+fCas(j.start)+' odpadá','Dobrý den,\njízda '+fDen(j.start)+' v '+fCas(j.start)+' odpadá'+(duv?' ('+duv.trim()+')':'')+'. Vyberte si prosím jiný čas v kalendáři.');
+      S.iDetail=null;S.iMsg={t:krestni(j.zak)+' dostal(a) zprávu a vybere si jiný čas.'};hlas(S.iMsg.t);break}
+    case 'i-neprisel':{const j=jizdy.find(x=>x.id===+b.dataset.id);j.stav='neprisel';break}
+    case 'i-prisel':{const j=jizdy.find(x=>x.id===+b.dataset.id);j.stav='probehla';break}
+    case 'i-zavrit':{
+      const duv=((document.getElementById('duvod')||{}).value||'Volno').trim()||'Volno';
+      zavreno.push({start:new Date(+b.dataset.t),duvod:duv});S.iDetail=null;S.iMsg={t:'Zavřeno. Žáci si tento čas nezapíšou.'};break}
+    case 'i-otevrit':zavreno=zavreno.filter(z=>z.start.getTime()!==+b.dataset.t);S.iDetail=null;S.iMsg={t:'Otevřeno pro žáky.'};break;
+    case 'i-zavrit-den':{
+      const den=PRAC[S.iDen];let n=0;
+      SLOTY.forEach(s=>{const st=vSlot(den,s),j=jizdaV(st);
+        if(j&&j.stav==='plan'){j.stav='zrusena';n++;posli(zak(j.zak).jm,'Jízda '+fDen(st)+' v '+fCas(st)+' odpadá','Dobrý den,\ninstruktor '+INSTR+' '+fDen(st)+' nejezdí, jízda v '+fCas(st)+' odpadá. Vyberte si prosím jiný čas v kalendáři.')}
+        if(!zavrenoV(st))zavreno.push({start:st,duvod:'Instruktor nejezdí'})});
+      S.iMsg={t:'Den zavřený.'+(n?' '+n+' '+(n===1?'žák dostal':'žáci dostali')+' zprávu, ať si vyberou jiný čas.':'')};hlas(S.iMsg.t);break}
+    case 'i-pripomenout':{
+      const z=zak(b.dataset.id);z.pripomenuto=new Date(ted);
+      posli(z.jm,'Zapište si další jízdu','Dobrý den,\nnemáte zapsanou další jízdu. Odjeto máte '+odjeto(z.id)+' z '+CELKEM+'. Volné časy najdete v kalendáři.');
+      hlas('Připomínka odešla');break}
+  }
+  vykresli();
+});
+vykresli();
+</script>
+</body>
+</html>
