@@ -455,7 +455,7 @@ document.addEventListener('click',e=>{
       SLOTY.forEach(s=>{const st=vSlot(den,s),j=jizdaV(st);
         if(j&&j.stav==='plan'){j.stav='zrusena';n++;posli(zak(j.zak).jm,'Jízda '+fDen(st)+' v '+fCas(st)+' odpadá','Dobrý den,\ninstruktor '+INSTR+' '+fDen(st)+' nejezdí, jízda v '+fCas(st)+' odpadá. Vyberte si prosím jiný čas v kalendáři.')}
         if(!zavrenoV(st))zavreno.push({start:st,duvod:'Instruktor nejezdí'})});
-      S.iMsg={t:'Den zavřený.'+(n?' '+n+' '+(n===1?'žák dostal':'žáci dostali')+' zprávu, ať si vyberou jiný čas.':'')};hlas(S.iMsg.t);break}
+      S.iMsg={t:'Den zavřený.'+(n?' '+n+' '+(n===1?'žák dostal zprávu, ať si vybere':'žáci dostali zprávu, ať si vyberou')+' jiný čas.':'')};hlas(S.iMsg.t);break}
     case 'i-pripomenout':{
       const z=zak(b.dataset.id);z.pripomenuto=new Date(ted);
       posli(z.jm,'Zapište si další jízdu','Dobrý den,\nnemáte zapsanou další jízdu. Odjeto máte '+odjeto(z.id)+' z '+CELKEM+'. Volné časy najdete v kalendáři.');
