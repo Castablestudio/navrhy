@@ -38,7 +38,7 @@ function svetla(scene) {
   scene.add(new THREE.HemisphereLight(0xfff6ea, 0x3b3f44, 1.35));
   const s = new THREE.DirectionalLight(0xffe2bd, 2.1);
   s.position.set(-9, 16, 7); s.castShadow = true;
-  s.shadow.mapSize.set(2048, 2048); s.shadow.bias = -0.0004; s.shadow.normalBias = 0.02;
+  s.shadow.mapSize.set(1024, 1024); s.shadow.bias = -0.0004; s.shadow.normalBias = 0.02;
   const c = s.shadow.camera; c.left = -18; c.right = 18; c.top = 18; c.bottom = -18; c.near = 1; c.far = 60;
   scene.add(s);
   const z = new THREE.DirectionalLight(0xbcd2ff, .45); z.position.set(10, 8, -8); scene.add(z);
@@ -80,8 +80,10 @@ function nastavVysku(im, k) {
 }
 
 export async function otevri(kod, info) {
-  const data = await fetch(`img/3d/${info.typ3d.toLowerCase()}.json`).then(r => r.json());
   const box = ui();
+  box.classList.add('nacita'); requestAnimationFrame(() => box.classList.add('je'));
+  const data = await fetch(`img/3d/${info.typ3d.toLowerCase()}.json`).then(r => r.json());
+  box.classList.remove('nacita');
   const platno = box.querySelector('.b3d-platno');
   const body = box.querySelector('.b3d-body');
   const panel = box.querySelector('.b3d-panel');
@@ -97,12 +99,13 @@ export async function otevri(kod, info) {
   box.querySelector('.b3d-prohlidka').addEventListener('click', () => { const s = document.getElementById('f-loft'); if (s) s.value = kod; });
 
   // scéna
-  if (!R) { R = new THREE.WebGLRenderer({ antialias: true, alpha: true }); R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFSoftShadowMap; R.toneMapping = THREE.ACESFilmicToneMapping; R.toneMappingExposure = 1.05; }
-  R.setPixelRatio(Math.min(devicePixelRatio, 2));
+  if (!R) { R = new THREE.WebGLRenderer({ antialias: true, alpha: true }); R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFShadowMap; R.toneMapping = THREE.ACESFilmicToneMapping; R.toneMappingExposure = 1.05; }
+  R.setPixelRatio(Math.min(devicePixelRatio, 1.5));
   platno.append(R.domElement);
   const scene = new THREE.Scene();
   svetla(scene);
-  const tex = new THREE.TextureLoader();
+  let kreslit = true;
+  const tex = new THREE.TextureLoader(new THREE.LoadingManager(() => { kreslit = true; }));
   const urovne = data.urovne.map((u, i) => postavUroven(u, i, tex));
   urovne.forEach((g, i) => { g.visible = i === 0; scene.add(g); });
   const zem = new THREE.Mesh(new THREE.CircleGeometry(60, 64), new THREE.MeshStandardMaterial({ color: 0x1a1f23, roughness: 1 }));
@@ -118,6 +121,7 @@ export async function otevri(kod, info) {
   function velikost() {
     const w = platno.clientWidth, h = platno.clientHeight;
     R.setSize(w, h, false); camera.aspect = w / h;
+    if (window.VG_SNIMEK) { fit = 1; camera.clearViewOffset(); camera.updateProjectionMatrix(); return; }   // náhled do karty loftu
     // byt do volného místa: na počítači vlevo od panelu, na telefonu nad panelem
     const pr = panel.getBoundingClientRect();
     // na úzké obrazovce musí kamera dál, aby se byt vešel na šířku
@@ -127,7 +131,8 @@ export async function otevri(kod, info) {
     else camera.setViewOffset(w, h, 0, Math.round((h - pr.top) / 2) - 40, w, h);
     camera.updateProjectionMatrix();
   }
-  velikost(); addEventListener('resize', velikost);
+  const naResize = () => { velikost(); kreslit = true; };
+  velikost(); addEventListener('resize', naResize);
 
   // pohledy: shora (2D) a 3D z rohu
   const shora = () => ({ t: new THREE.Vector3(0, 0, 0), p: new THREE.Vector3(0, (vel * 1.7 + 4) * fit, .01) });
@@ -141,7 +146,7 @@ export async function otevri(kod, info) {
   // místnosti
   let lvl = 0, vybrana = null;
   const stitky = [];
-  const foto = data.foto;
+  const foto = info.fotky ? { popis: info.fotkyPopis, mapa: { '*': info.fotky } } : data.foto;
   const vse = foto && foto.mapa['*'];
   function obrazkyMistnosti(m) { return foto ? (foto.mapa[m.kod] || []) : []; }
   function ukazKartu(m) {
@@ -180,7 +185,7 @@ export async function otevri(kod, info) {
   // podlaží
   const urBox = box.querySelector('.b3d-urovne');
   function prepniUroven(i, letet = true) {
-    lvl = i; urovne.forEach((g, k) => g.visible = k === i);
+    lvl = i; urovne.forEach((g, k) => g.visible = k === i); kreslit = true;
     urBox.querySelectorAll('button').forEach((b, k) => b.classList.toggle('je', k === i));
     if (letet) { vybrana = null; stitky.forEach(s => s.b.classList.remove('je')); seznam.querySelectorAll('button').forEach(b => b.classList.remove('je')); karta.hidden = true; letNa(ze3d(), 800); }
   }
@@ -210,12 +215,15 @@ export async function otevri(kod, info) {
   function snimek(now) {
     if (!bezi) return;
     if (let_) {
+      kreslit = true;
       const k = Math.min(1, (now - let_.t0) / let_.ms), e = ease(k);
       ctrl.target.lerpVectors(let_.z.t, let_.cil.t, e); camera.position.lerpVectors(let_.z.p, let_.cil.p, e);
       if (let_.pri) let_.pri(e);
       if (k >= 1) let_ = null;
     }
-    ctrl.update();
+    const pohyb = ctrl.update();
+    if (!(pohyb || kreslit || let_)) { requestAnimationFrame(snimek); return; }
+    kreslit = false;
     R.render(scene, camera);
     const w = platno.clientWidth, h = platno.clientHeight;
     stitky.forEach(({ b, m }) => {
@@ -229,10 +237,9 @@ export async function otevri(kod, info) {
     requestAnimationFrame(snimek);
   }
   requestAnimationFrame(snimek);
-  requestAnimationFrame(() => box.classList.add('je'));
 
   function zavri() {
-    bezi = false; removeEventListener('resize', velikost); removeEventListener('keydown', klavesy);
+    bezi = false; removeEventListener('resize', naResize); removeEventListener('keydown', klavesy);
     box.classList.remove('je');
     setTimeout(() => { ctrl.dispose(); scene.traverse(o => { if (o.geometry) o.geometry.dispose(); }); box.remove(); }, 400);
     document.documentElement.classList.remove('b3d-otevreno');
